@@ -89,6 +89,34 @@
   .cat-repro .badge-cat    { background: var(--repro); }
   .cat-adrenal .badge-cat  { background: var(--adrenal); }
 
+  .badge-sp {
+    font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 10px;
+    background: #e8e8e8; color: #444; border: 1px solid #ccc;
+  }
+  .badge-morph {
+    font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 10px;
+    border: 1px solid;
+  }
+  .morph-round        { background: #ede7f6; color: #6a1b9a; border-color: #ce93d8; }
+  .morph-epithelial   { background: #fff3e0; color: #e65100; border-color: #ffcc02; }
+  .morph-spindle      { background: #fce4ec; color: #880e4f; border-color: #f48fb1; }
+  .morph-inflammatory { background: #e8f5e9; color: #1b5e20; border-color: #a5d6a7; }
+  .morph-mixed        { background: #e3f2fd; color: #0d47a1; border-color: #90caf9; }
+
+  .filter-morph-bar { background: white; border-radius: 12px; padding: 0.7rem 1.2rem;
+    margin-bottom: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex;
+    flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .morph-btn { border: 2px solid transparent; border-radius: 20px; padding: 0.2rem 0.8rem;
+    font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    background: #f0f0f0; color: #555; }
+  .morph-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  .morph-btn[data-morph="all"].active { background: #2c3e50; border-color: #2c3e50; color: white; }
+  .morph-btn[data-morph="round"].active       { background: #6a1b9a; border-color: #6a1b9a; color: white; }
+  .morph-btn[data-morph="epithelial"].active  { background: #e65100; border-color: #e65100; color: white; }
+  .morph-btn[data-morph="spindle"].active     { background: #880e4f; border-color: #880e4f; color: white; }
+  .morph-btn[data-morph="inflammatory"].active{ background: #1b5e20; border-color: #1b5e20; color: white; }
+  .morph-btn[data-morph="mixed"].active       { background: #0d47a1; border-color: #0d47a1; color: white; }
+
   .card-img-area { position: relative; overflow: hidden; background: #1a1a2e; cursor: pointer; }
   .card-img-area img {
     width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.3s;
@@ -187,6 +215,16 @@
     <input type="text" class="search-box ms-auto" id="searchBox" placeholder="🔍 搜尋診斷名稱...">
   </div>
 
+  <div class="filter-morph-bar">
+    <span class="label">形態：</span>
+    <button class="morph-btn active" data-morph="all">全部</button>
+    <button class="morph-btn" data-morph="round">圓形細胞</button>
+    <button class="morph-btn" data-morph="epithelial">上皮細胞</button>
+    <button class="morph-btn" data-morph="spindle">紡錘細胞</button>
+    <button class="morph-btn" data-morph="inflammatory">炎症</button>
+    <button class="morph-btn" data-morph="mixed">其他</button>
+  </div>
+
   <div class="results-count" id="resultsCount"></div>
   <div class="row g-3" id="caseGrid"></div>
 </div>
@@ -221,125 +259,145 @@ const CAT_LABEL = {
 };
 
 const CASES = [
-  {dx:'前列腺增生', dxEn:'Prostatic Hyperplasia',
-   cat:'repro', site:'前列腺',
+  {dx:'增生', dxEn:'Hyperplasia',
+   sp:'dog', morph:'epithelial', cat:'repro', site:'前列腺',
    imgs:['1iCHNHGjdy03IJqVXeAJcyPvM8ANgmD3p','1ctNwTHgwDJJea7nH76bdiIwrYGfFxFB9','1IKwtXginbJ1wMRoz7AKi4AVFMWzvsP8K','10_TOtshWAgDcHI60ZmrafaLMnXBzaA7s','1C5qjoUNDOt_3yxnVJACucEuIrsCkisjx']},
 
   {dx:'組織細胞瘤', dxEn:'Histiocytoma (Iba-1+)',
-   cat:'skin', site:'皮膚團塊',
+   sp:'dog', morph:'round', cat:'skin', site:'皮膚團塊',
    imgs:['17du8JpPnTMpJL8-HRMLJ73HoLYrm6m7f','1moZ_gf2B-2GYfgboPBU611xx3mPrX9Qb','1KSaMHwpLJbJ3DPKIj07-U7Pf3_dChytJ','1MZPFbLr_bxJf_HhHat3No1ikFon6OrBt','1yIQoelVm4BDbiRnb51fgqVZkCFUHEM-U','1Cl2T71TKw4z3QR8QdQ5wCTvKAkJI8xuN','1Pbf-bZBbD8FQ09P5W2HxipDC2PSFzI9Y','1ey-RNqxaIUTbR9HM1jFdWICYS0w-oc2n']},
 
   {dx:'球蟲', dxEn:'Coccidiosis (Fecal)',
-   cat:'gi', site:'糞便',
+   sp:'unknown', cat:'gi', site:'糞便',
    imgs:['1L7zCHBZnYBva_2QL_0zy3gtNRGWApKeT','1TipIW-gMYQsKnfzkPjuDzetqBKHiNNrH']},
 
-  {dx:'腸系膜淋巴結及腹腔團塊-淋巴瘤', dxEn:'Mesenteric LN & Abdominal Mass - Lymphoma',
-   cat:'lymph', site:'腸系膜淋巴結/腹腔',
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'unknown', morph:'round', cat:'lymph', site:'腸系膜淋巴結/腹腔',
    imgs:['10mE4XTXWa-gVvPH3sQYBc5CPWAuQZbx6','1xTelSJNT448JFo4VAiaZ1ScvvyvYcBpS','1kHGTViYprquz4OmnTY1nJ1fdoHsbgHai','1xMpS5p4Z8zA0h3zixpPxhB8YpbkjLRcS']},
 
-  {dx:'脾臟血管肉瘤', dxEn:'Splenic Hemangiosarcoma',
-   cat:'spleen', site:'脾臟',
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'dog', morph:'round', cat:'lymph', site:'腸繫膜淋巴結',
+   imgs:['1jLXCB_Q1VKEp50dswbjVkXEHfmr0i-RD','1mSA7pVYJ5ybG5Hz5hT06sJ3Rw1blHtmx','1R_NZcw24gkbQGHIl_875pjVaCnU9_3q4']},
+
+  {dx:'血管肉瘤', dxEn:'Hemangiosarcoma',
+   sp:'dog', morph:'spindle', cat:'spleen', site:'脾臟',
    imgs:['1J6NvqLZv4O9mw0Qg9rOLz-3Yg4kxlSKu','1TLlBM5rtgMDdS0f6aU4S04KmeE-Etool','1-dOmYYfgLY_d3vVPzhdIAjagPDipPSRC','19UrT9qFjuw8dXtxfrqOtFQfKg91ozftm','1yjppInjk6VyFlzdCFj2c2YI8WbWZCO2M','1xy43TYdhrWMQQpd9XDzlP08DSy_sdyFW','1zp5Nh4MiRu1Ny4RPEGP02OxzTzw9b6CC','1pjrmrWPP3SbylvBeSJsFW52YHUp4E1kZ','1Hm_g6O7vkxp_d96Air4xD5VKCJhDxb28','1ssUGoGwtW55U18ZbuB-Mn96_dCmX1Kwf','1C5yZubnD1ZXgFhF2tggBnLcvv7HF5Ezr','10j6K4u3dZzfbq4y7sD5LBXCD1FDirU__','1S8FXpffYoFLNVST1fDscCFEiCRob42XC']},
 
   {dx:'乳糜腹', dxEn:'Chylous Ascites',
-   cat:'effusion', site:'腹水',
+   sp:'unknown', cat:'effusion', site:'腹水',
    imgs:['16SugMthwSsU5FwBfO_v6xYAB3YkoQ0Yi','1b5D8Dp7snqGrHv9SdlFAKkSrvVpAXF2I','1wciXNsbATAQbjEb1ys5aDkU8AxGOSvi9','1GN2iHWI43HEnZZZnOh4XAtgKZ4cjotu7','1jDtOH97-gH7M5pddueV9gqgsWi61UPcZ']},
 
   {dx:'上皮囊腫', dxEn:'Epithelial Cyst',
-   cat:'skin', site:'皮膚',
+   sp:'unknown', morph:'epithelial', cat:'skin', site:'皮膚',
    imgs:['1lJrFqXbIEcCtT7p4KfuZqHVBclMIUknW','1raBqMCC0fecl2f2cPaiySyVlqTmqiROJ','1-UqYFqsiwYSwkD5EcT8rRU8ZljELqoib']},
 
-  {dx:'胸水', dxEn:'Pleural Effusion',
-   cat:'effusion', site:'胸水',
+  {dx:'Carcinoma（上皮癌）', dxEn:'Carcinoma',
+   sp:'cat', morph:'epithelial', cat:'effusion', site:'胸水',
+   imgs:['1XguKr0LiMMoXBM8cknsR5Ds1G1waesM-','1zqye_XOdZAG98STezsRrrLKGqF3Fq74g','1krBNs2hFOgXjOY4wigzJF3onP9BeFfZs','1XnQ4Bb2GeHHPfsHxTXXa661m5_-zpHLM','1CNjIwfXNJekoiNBm-Cl73Lxw7YriA19Y','1_m35za4CxHaCWMwBSQX8EThQXUKtqAcU','1qVJKm2e0exAOitn28QdHiM2L_dQV06CD','1mKGQJPCmZ_zIqg-XVO78lHYz-3OCZFpm']},
+
+  {dx:'Carcinoma（上皮癌）', dxEn:'Carcinoma',
+   sp:'cat', morph:'epithelial', cat:'effusion', site:'胸水',
    imgs:['14I0EbRZt4jTu0IXQhylT-oIhIF6Itbu6','131ECcPD-xLkc2D334zE6Kask-eHw_t9y','1IgaKT6DL_KFdBXaXwXyPAv14TnYs_uW9','1tKSkUTsSQTbp3dKue-6ychuXu0-D8iU6','1yfW0ssKGDr7zSdvi_4w2x39oUqMOoyOR','10ka_sNaG7sF5yQey_gdp0lCPBjsV0RdL','1uUO2uPP_MBI196HCyrl5v7lVjxqwbQYe','1e2-RbtEyZAyMbeGP9mYOwaTKGISJxTjT','1RGGKIrxfIjKsXBAKuEqqiOVvp-mZA6Je','1TXtNXfhiPx4lOk1HFIjY2l5obOKs6Dyu','1iAfteUkKoq5XelqQTKZkoHtBA8TbjVT5','1ZJeFHXDAMJCSezmfJO2oAGgQvo1dUSSj']},
 
-  {dx:'腸胃道嗜酸性球性硬化纖維增生症', dxEn:'Feline Gastrointestinal Eosinophilic Sclerosing Fibroplasia (FGESF)',
-   cat:'gi', site:'胃幽門/腸系膜淋巴結',
+  {dx:'嗜酸性球性硬化纖維增生症', dxEn:'Eosinophilic Sclerosing Fibroplasia (FGESF)',
+   sp:'cat', morph:'inflammatory', cat:'gi', site:'胃幽門/腸系膜淋巴結',
    imgs:['1xnYRq5fagSZZ-pqDZjAklpFK9gZamnOl','1u7kDH1OB1AG77y9U4QX748VRGvdA30Yp','1W-Sj1o8UQIXjHG5SeQ0wlcmxgLGTnQPy','1Qu3KGKDHQYXhsyP8iLQUlMtOzXQSmmlF','1y-N05HUQJanE_m9gcIWNtc6nBH-dOKtE','10rLjpHZpaQtGz5A2wk-J3wxkQp4ZzBPm','124K76E5nyRdkGnLtawBlUsIRHuKtZUVI','1GD8DU88oeyuaLCG8rMYzJjvRaDtxkTdz','1kG5-qeGKMWTrmf232B6PbZbRGQRjyvb6','17Gcpvz8Y0IuljCnZG7kxH1IJyvnPjdQq']},
 
-  {dx:'尿渣-磷酸銨鎂結晶', dxEn:'Urine Sediment - Struvite Crystals',
-   cat:'urine', site:'尿液',
+  {dx:'磷酸銨鎂結晶', dxEn:'Struvite Crystals',
+   sp:'unknown', cat:'urine', site:'尿液',
    imgs:['1E6YLb9RV_JMJkbIIcHlMXB9KNHLmtgPQ','1mE6fARB8AyUYLKZ64bx4Z-JvCSBq4DdW']},
 
-  {dx:'左腎上腺-嗜鉻細胞瘤', dxEn:'Left Adrenal Pheochromocytoma',
-   cat:'adrenal', site:'左腎上腺',
+  {dx:'嗜鉻細胞瘤', dxEn:'Pheochromocytoma',
+   sp:'unknown', morph:'epithelial', cat:'adrenal', site:'左腎上腺',
    imgs:['1AXjq7pSxHC0ZoIfjcT2hxLaBtlN80vZz','1vL2GMTWTafkZIcjyJecpp9-USkMiRKzk','1CmHz3j-tcLIEYQmlgX9AcDwqTh6XLYKl','1KP_QHIGaNqWa_Sw1mUOQklyd6sEMtNdk','1NyVSQje9LczAc0QSsRc8iIgAI3cM3aQx','1Ew_K5eFo_srkxYrzezR_JxQxePSh8NVW','1D-KecJlyQRL8kU-04YN-oPLaB2o9ZkfC','1AoOxPAszGSRFSwRHLJtQ6hgC52TVTLLK','1Tn4DPVWStHq0s4-iA0STq1EzwgjxhOXC','1fHnILWfS7oJZ9yGklTFBwqNYoLalv_9z','1DdRZEktPAK5JzmCVziHJ4M37QRKtuvz-','1GwNPO0DctYomw99dsT6cKS6xE3bz_VmD','1F_CDc2IosUAQ4jhFt1K1JNe6w-NWXJ2C','1jiqv3hjHRHWW7TK-tlHNqwTlNOwr5XF0','1UR-xeIKkzWTb8OQdDE3xMJEmaq73DaKh','1lYm9_yV4vrGpJ6Blluwr5UvyQA-OjBja','1eEcmHr7I-6YYH9-yHY4o5qZM_JAW_4Yw','14WGcmfZcMpAgWacjQ2EK_pdZ5-2oicx6']},
 
-  {dx:'胸水-貓傳染性腹膜炎(FIP)', dxEn:'Pleural Effusion - FIP (FCoV RT-qPCR+, IFA+)',
-   cat:'effusion', site:'胸水',
+  {dx:'貓傳染性腹膜炎(FIP)', dxEn:'FIP (FCoV RT-qPCR+, IFA+)',
+   sp:'cat', morph:'inflammatory', cat:'effusion', site:'胸水',
    imgs:['1hKVX9mSuJWr7dFNzowLgsXIInzQSjfV0','10gIm04OLBD7ES0nOxMoDE6Eot48JedoD','16pg1NdpUdoFAKIe-G5ynGO-HBy2pkR55','1_3XnXOnl5DNXQ7yDZML_Av0N1RDyy7yV','1YuP-0WXRKgz5STSXd3JDI8UfKCOdVBRc']},
 
-  {dx:'胸水-淋巴瘤', dxEn:'Pleural Effusion - Lymphoma',
-   cat:'effusion', site:'胸水',
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'unknown', morph:'round', cat:'effusion', site:'胸水/心包囊積液',
+   imgs:['16hQGtPkrliRj3cCJFR5rhcWTlzo9F0kz','1GiU0uwG623GD8xciIqnwFjsayIVn3PFk','1uIAR243aLJF5Z9f01vmW1-dUjxzno7qh','1Ej7um2Ga6Q9jFOEc0wOKeF1Obr_7WJsO','1G9ar-rvySlQj1ST17tkHCX8ouiu3HBlh']},
+
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'unknown', morph:'round', cat:'effusion', site:'胸水',
    imgs:['106_zPukVSAocPHIvkX-zrJVM8BT_ESY0','1m84zuj67RHa2it-LaX7E62tjYeTBBGH-','17sRxOOElhv2sAHe-1F3I-zd5QwmW39Tc','10eugCHVZYCE5xIqCr08gCcwCzK7-JHYB','1QOVdeNc1RduK91ttDWR0dAT5JWjOu0Ip','1OVl-LwZS_8OS2j2H_CvmJpmuWZRZWzwS','10CdmI_UycWmM0mspXqYe5_ZHcnOhm3Uh']},
 
   {dx:'乳糜胸', dxEn:'Chylothorax',
-   cat:'effusion', site:'胸水',
+   sp:'unknown', cat:'effusion', site:'胸水',
    imgs:['1ib5xoqN3KRgDCdOQZbi47LxtghgoWr7z','1p3bLlN1M6ieeVd0PgF7rIyTW5K0gB3_e','1rcdrbAiLmpJSO79S97WRRmtoYoFDlgE5','1vb25LdGUNqu2cR7osXQ9arUHeakGsJku']},
 
-  {dx:'胃淋巴瘤', dxEn:'Gastric Lymphoma',
-   cat:'gi', site:'胃(FNA)/胸水',
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'unknown', morph:'round', cat:'gi', site:'胃(FNA)/胸水',
    imgs:['1_GfcJwymsoAppQKBULkPjlH1GNWDZYow','1kwgloBczI04mQRybEt4s9uejHUJUHJbc','1e63FSDN7aC7NnKh9F061nVRFwiJC_Bzr','10jdbecMoLkCsFa441iYtvj6p7S1hvfU5','11J7A7gAxc3E59I5zKwD5WSDd3p7I6_Z8']},
 
-  {dx:'體表化膿性肉芽腫', dxEn:'Cutaneous Pyogranuloma',
-   cat:'skin', site:'體表',
+  {dx:'化膿性肉芽腫', dxEn:'Pyogranuloma',
+   sp:'unknown', morph:'inflammatory', cat:'skin', site:'體表',
    imgs:['1U32E35jlnJWaPIrWzicnOKNeeiRaBQw2','1CKYSlefeKWh-hc5IyRx-JjkkqWh7aBHB','1JjlKiGZCsH2jw0PXDjCCKQuTl7pXg7rw','1daXrjGsJ6DTr9kbnhupO4TL4AkdiyrtT','1Wc4fqwq7woVdJULsotJbGrROfyPnfi9y','1aV5ZvZ9dBFVuCqb8icKV3lw9RfHQTQwX','1yuTe5yMBYFMP5zgd4LWJQ11RsVNeKUV3','1YiqRnih06wIk4ZOGFo8_iYzeqP_bwbFv']},
 
-  {dx:'多中心型淋巴瘤', dxEn:'Multicentric Lymphoma',
-   cat:'lymph', site:'淋巴結',
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'unknown', morph:'round', cat:'lymph', site:'淋巴結',
    imgs:['1EP-Ut4EUCCd5ZxQZLY0bW5YCIjokHLfP','1RoOHHMcAW7QSoiEnnXK7oviGjPXQdZbW','1r83VWHFpV5e6zKzjpnB43OzDW643djzC','1Ap5LzmtohV8AGR-sfH09BCoS0__5ty9w']},
 
-  {dx:'乳腺腫瘤（胸水轉移）', dxEn:'Mammary Gland Tumor with Pleural Metastasis',
-   cat:'mammary', site:'乳腺/胸水',
+  {dx:'乳腺瘤', dxEn:'Mammary Tumor',
+   sp:'unknown', morph:'epithelial', cat:'mammary', site:'乳腺/胸水',
    imgs:['19awGzwN8YZha3rDsIaTHy04-Sd4A5UlT','1zG-idaBw7KZAPiKGzTgiHysFiHAo6gS7','1qkVBDoGr-omKfsY1l2Kc44CVXLYeC5Va','1YIOBzGfkP436xMRO0Qwe32Kz7UICuTvd','1Z5bOLqEIl0eXEAKi8TBOCs8bTIvcb9oQ']},
 
   {dx:'尿渣', dxEn:'Urine Sediment',
-   cat:'urine', site:'尿液',
+   sp:'unknown', cat:'urine', site:'尿液',
    imgs:['1ozEcakucZSbW8AzeLuYYssIoT0-dnD13','1OF4vLiezs4n2Mn8zjr4m0U0lsIsNyvew','1KnHcO7kFzGWpCKcrwFKweZm09oA876mt','19-EVbIFmW6g6eAOprL_8XntqfXy9PivW','1fqikTZ6Z2A8xPCofqQa3belBDKvpUV_2','1JppRX1R78RZgFAiw7ncWoYhSfvyBXqUL','1Q3z7roKWpx-eRs-kZVxS497tZ1MxG3c0']},
 
   {dx:'尿渣', dxEn:'Urine Sediment',
-   cat:'urine', site:'尿液',
+   sp:'unknown', cat:'urine', site:'尿液',
    imgs:['1vLbMlOHg1H0r9rNrhMxCqZjXR05TimZN','1NZj_X-K3u8p1ifb1QAUG-cLspAQ7_-ch','12W6cPR3NpxejfrHgcNWJC3QkdyZLRD6G','1vkbBK7k53SwL7b9cJHGhPbXkCuIn7OMc','1-L0QGRxRm6lPPGVaiBsoDql0wltjBQM2']},
 
-  {dx:'直腸原位癌/腺癌', dxEn:'Rectal Carcinoma in Situ / Adenocarcinoma',
-   cat:'gi', site:'直腸團塊（採樣）',
+  {dx:'原位癌/腺癌', dxEn:'Carcinoma in Situ / Adenocarcinoma',
+   sp:'dog', morph:'epithelial', cat:'gi', site:'直腸團塊（採樣）',
    imgs:['1ZKlp2yQP6KlfbXzc01-4aq7IqF_p2Swp','1R6oH0nmC168hLc2j4rABNdWEHdhJp55y','1fYQqV9Lb_PR3AKEQEKsUDt_dfR-99Xpt','1o4loqiwj5W_OXktnMLFV4w2OR54Bc_fy','11xSG-_mkXkiJT08INal83qkGR9DRPhZR']},
 
-  {dx:'腺癌（指端轉移/胸水）', dxEn:'Adenocarcinoma with Digital & Pleural Metastasis',
-   cat:'mammary', site:'指端/胸水',
+  {dx:'腺癌（指端轉移）', dxEn:'Adenocarcinoma with Digital Metastasis',
+   sp:'cat', morph:'epithelial', cat:'mammary', site:'指端/胸水',
    imgs:['1Q-sXgRMlZ5aQwUzTbYxfiSk5UwRLf8jF','1ETrn-AavncFrPeqDXhsjzTE5grC1I8Cb','141SkZc0n1wKnT6HzcTpd83-KFyTz4_Kb','1AdO-yOB--8HbAKii-mr48QNoWdq3GXyS','1sNxPHtxp4KlLzrjCULeuEAycDWKhRerB']},
 
-  {dx:'腸系膜淋巴結-淋巴腺炎', dxEn:'Mesenteric Lymphadenitis',
-   cat:'lymph', site:'腸系膜淋巴結',
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'dog', morph:'round', cat:'lymph', site:'下頷淋巴結/脾臟',
+   imgs:['1avCZbBlyfTXMLnwvQWvtRAFcu6YfNxkH','1MPbPY_z6FeDy73pOJ_-cSTtClTS5W2vk','1vesKlQ2QmEwdip2g0WG4LrkiUAJMl_ry','1bLw-UEKM78T8R2D6FsL4eAduLwwE-qxp','1hDdiRxpghYFlkMDMyJmiIr7AxWcjpzOA','12sE_SEgMSekbuT3WVNoXewpxTb3N-jGn','14S_sQXQHBwZzlGxnEvPN5YnV8WvvIo1Z','1WTaTxVhcYhgbezYg325DRJMdlpnxdYwy','1WbSLhRiPqPtMDtsjaFzoFSghOT7bdG3i']},
+
+  {dx:'淋巴腺炎', dxEn:'Lymphadenitis',
+   sp:'unknown', morph:'inflammatory', cat:'lymph', site:'腸系膜淋巴結',
    imgs:['1j04pr4aezv06BEXBJoBTJoN3MnWLzUlj','1CRtHWLZ2jxiTRtbeOGlUNm605RxZgfD3','1NGswXrAXzaVTdwFl7LJLvc_S4pKz-Q5e','1STZT27xy7OqqGOSf1GiC6K4EsVLhJqkF']},
 
-  {dx:'膽汁-細菌', dxEn:'Biliary Bacteria (Cytology)',
-   cat:'liver', site:'膽汁',
+  {dx:'細菌性膽囊炎', dxEn:'Bacterial Cholecystitis',
+   sp:'unknown', morph:'inflammatory', cat:'liver', site:'膽汁',
    imgs:['1fHJn5Zm1FBVbkVwXAK55QcWEmWTOyaIV','1qLz4Ab8b-9NfxDpoO-9z4b6kdlwwwu4c','14_YZlv192M_GM-HcreuCNssR9aRGBBu8']},
 
   {dx:'嗜酸性肉芽腫', dxEn:'Eosinophilic Granuloma',
-   cat:'skin', site:'皮膚/黏膜',
+   sp:'unknown', morph:'inflammatory', cat:'skin', site:'皮膚/黏膜',
    imgs:['1algIViYe8DhALDBUUf5edLQDAfVynUuo','1UyI6aAkXLv-fWIQQBEJKMnswB0be71D3','1xUwLNbkFpI8ochMUoEbTOZPxa4k6opaP','1OiaEmIeq0VBZ1ibUDUy3Mv3tjLLLk00v','1RHcOav7U3WgS1yt35eiR2VKfCRbDli6J']},
 
-  {dx:'額頭皮下-淋巴瘤', dxEn:'Subcutaneous Lymphoma (Frontal Region)',
-   cat:'skin', site:'額頭皮下',
+  {dx:'淋巴瘤', dxEn:'Lymphoma',
+   sp:'unknown', morph:'round', cat:'skin', site:'額頭皮下',
    imgs:['1zazNs5jhUtAQCOzR74FYHicpr-EA-PGJ','1qSEg8zCd5JQ_QHVLJ3IBgd6TjoUvBbUH','1A0P3_1KWid9eTH5EZpCOSbwO6W3SbciB','18V6Yz0dfhwK5iFiC8yQ8ZuRC-rXe16eA','1Z-cqHtSlxwTam8v3tW13vnYSSUoc3-Fj','1dg8eWPi2v_XJq-Nan9BJZHWzXiEB8LyN','1W-fn8ElW8qb6bekwBUT6aXfDK_WbZjsC']},
 
-  {dx:'前列腺化膿', dxEn:'Prostatic Abscess',
-   cat:'repro', site:'前列腺',
+  {dx:'化膿', dxEn:'Abscess',
+   sp:'dog', morph:'inflammatory', cat:'repro', site:'前列腺',
    imgs:['14rvDlcWF3Foq0AfB-wZUJFrf_UCFSJ7F','1bq0RNfd1W2VsaqetdFCyB7j5ey1QcWng','1Ml4GQBaXmTeBzs2wZwf-RxW2-JY634XV','1yUVZ9iLNPcM_Z7kSom-tsmjxi51dJPpF']},
 
-  {dx:'脾臟-髓外造血', dxEn:'Splenic Extramedullary Hematopoiesis',
-   cat:'spleen', site:'脾臟',
+  {dx:'髓外造血', dxEn:'Extramedullary Hematopoiesis',
+   sp:'unknown', morph:'mixed', cat:'spleen', site:'脾臟',
    imgs:['1N-EjjMHfX_dP-Se0Yp54IJYXvQ0eHxoK','179B22EXu_2WuxjCPbd40vulsew8hPmbf','1mf106wpHH8m6qlt79kUxeUGACBMP50lB','1WVDoBmuTCB67b6w3swsGO1pyGk6xqVJs']},
 
-  {dx:'Hepatoid Cell Tumor', dxEn:'Hepatoid Cell Tumor (Perianal Gland)',
-   cat:'skin', site:'皮膚腫塊',
+  {dx:'肝樣細胞瘤', dxEn:'Hepatoid Cell Tumor (Perianal Gland)',
+   sp:'dog', morph:'epithelial', cat:'skin', site:'皮膚腫塊',
    imgs:['1wvuQ2qI1ST-QdB3kZufdzuFpEUye7P9d','1v2l4zxSckp61eFxFLZUiDywS4tVFGq7h','1TiqrXJiR7RNEhKa9TqQXX1VzGRzRfDv6','1Vwq1Q11TEJrAd6_dN-uB0UA1LyG2UBDh','1jmutM9KTEp8qXN6Q6ZTufEeamuQPu_Uv','1qA171mKU-6h8CmxUtbNSOz-H8982JFPr','1rFO5jZ3zVYz_Kz6M3ubc-joJarunBgt8','1ARjSiHQMCcqo19yDL4RsELDxdgpd9vYZ','1FGjho77Gh2dYUBkby0h1l98Av_EDkt6v']},
+
+  {dx:'胰島素瘤', dxEn:'Insulinoma (Pancreatic)',
+   sp:'other', morph:'epithelial', cat:'gi', site:'胰臟',
+   imgs:['1vG5nXtwTZstasw-azzldUNptH9NZKHPq','1CTQyfINRaPj-09kmbkMYuJPib4Z9NSbl','1x0yMbAtlzPSIxq88kAXxDVEfhEFy_yXs','12e66BK03v0GkTm44s5_ue9Tl1FghkQrJ','1mfX9EoJ6jvP-yHK6eMwpeFXMe2sWwoDb','1ImSnadF5fODkKmz0vuQ05DfIhm4jDbNP','1ZmNlMdnLarb1LbcTo2q1RK_4VG5vo1En','1EMNbGAYmxLm1hDlk29hhwLfITQTaJRLH','1PzpZMdCcG4QdXfctMfclRZlx9u2HwH1K','1D6sEBKn8bZ16x_P7WE7dwUPPpd6FDyK3','1hOS0yXMTeQfillZIhI6qYQRMo-CodT04','1yf4X3ni-2hpGQNiowUFTRLelH4wrN5aX','1U2vLdim3X2cAvihaPJCQhHiKcGgpONHN','1Q4awSbqonHMoNYAuC2jRO5skHr0N7miH','1pXMfQedqDefCpSVHAUWyrm6CRUhAOSoI','1wJjwPjlcwmycxxk9y_lqfV9orGsXuUBj','1OsHr2HDCdJyd82e8B8sxOZBVy8tSGHJH','129P5YN6QwYTxlDgklZdH-pZdYuLXQetq','1D8MOBlyaI-KDpSpnsxuHXY37CIQ-gvK5','17Z5QzdCG6tpl5Gm8ZFP3DkUVUUwdhgeZ']},
 ];
 
 // State
-let currentCat = 'all', searchQ = '', currentDx = '';
+let currentCat = 'all', currentMorph = 'all', searchQ = '', currentDx = '';
 let lbCaseIdx = 0, lbImgIdx = 0;
 
 // Populate disease dropdown
@@ -362,6 +420,14 @@ function renderCard(c, idx) {
       <div class="card-accent"></div>
       <div class="card-meta">
         <span class="badge-cat">${CAT_LABEL[c.cat]}</span>
+        ${c.sp !== 'unknown' ? `<span class="badge-sp">${c.sp === 'dog' ? '🐕 犬' : c.sp === 'cat' ? '🐈 貓' : c.sp === 'other' ? '🐾 其他' : ''}</span>` : ''}
+        ${c.morph ? `<span class="badge-morph morph-${c.morph}">${
+          c.morph === 'round' ? '圓形細胞' :
+          c.morph === 'epithelial' ? '上皮細胞' :
+          c.morph === 'spindle' ? '紡錘細胞' :
+          c.morph === 'inflammatory' ? '炎症' :
+          c.morph === 'mixed' ? '其他' : c.morph
+        }</span>` : ''}
       </div>
       <div class="card-img-area" data-case-idx="${idx}" data-img-idx="0"
            onclick="openLightbox(${idx}, parseInt(this.dataset.imgIdx))">
@@ -393,12 +459,13 @@ function renderAll() {
   let visible = 0;
 
   CASES.forEach((c, i) => {
-    const catMatch = currentCat === 'all' || c.cat === currentCat;
-    const dxMatch  = !currentDx || c.dx === currentDx;
+    const catMatch   = currentCat   === 'all' || c.cat === currentCat;
+    const morphMatch = currentMorph === 'all' || c.morph === currentMorph;
+    const dxMatch    = !currentDx   || c.dx === currentDx;
     const q = searchQ.toLowerCase();
     const searchMatch = !q ||
       c.dx.includes(q) || c.dxEn.toLowerCase().includes(q) || (c.site||'').includes(q);
-    if (catMatch && dxMatch && searchMatch) { visible++; html += renderCard(c, i); }
+    if (catMatch && morphMatch && dxMatch && searchMatch) { visible++; html += renderCard(c, i); }
   });
 
   grid.innerHTML = html;
@@ -444,6 +511,14 @@ document.querySelectorAll('[data-cat]').forEach(btn => {
     document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
     this.classList.add('active');
     currentCat = this.dataset.cat;
+    renderAll();
+  });
+});
+document.querySelectorAll('[data-morph]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('[data-morph]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentMorph = this.dataset.morph;
     renderAll();
   });
 });
