@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>臨床病理學圖譜｜教學版 | Clinical Pathology Teaching Atlas</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  :root {
+    --skin:     #27ae60;
+    --mammary:  #e91e8c;
+    --lymph:    #8e44ad;
+    --effusion: #2980b9;
+    --gi:       #e67e22;
+    --liver:    #a0522d;
+    --spleen:   #c0392b;
+    --urine:    #f1c40f;
+    --repro:    #e84393;
+    --adrenal:  #00838f;
+  }
+  body { background: #f5f6fa; font-family: 'Segoe UI', sans-serif; }
+  .atlas-header {
+    background: linear-gradient(135deg, #1a2a4a 0%, #2c3e50 100%);
+    color: white; padding: 2rem 0; margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .atlas-header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: 1px; }
+  .atlas-header .subtitle { opacity: 0.8; font-size: 0.95rem; }
+  .atlas-header .stats { font-size: 0.85rem; opacity: 0.7; margin-top: 0.3rem; }
+
+  .filter-bar { background: white; border-radius: 12px; padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex;
+    flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .filter-bar .label { font-weight: 600; color: #555; font-size: 0.85rem; margin-right: 0.5rem; }
+  .filter-btn { border: 2px solid transparent; border-radius: 20px; padding: 0.25rem 0.9rem;
+    font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background: #f0f0f0; color: #555; }
+  .filter-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+  .filter-btn.active { color: white; }
+  .filter-btn[data-cat="all"].active     { background: #2c3e50; border-color: #2c3e50; }
+  .filter-btn[data-cat="skin"].active    { background: var(--skin);    border-color: var(--skin); }
+  .filter-btn[data-cat="mammary"].active { background: var(--mammary); border-color: var(--mammary); }
+  .filter-btn[data-cat="lymph"].active   { background: var(--lymph);   border-color: var(--lymph); }
+  .filter-btn[data-cat="effusion"].active{ background: var(--effusion);border-color: var(--effusion); }
+  .filter-btn[data-cat="gi"].active      { background: var(--gi);      border-color: var(--gi); }
+  .filter-btn[data-cat="liver"].active   { background: var(--liver);   border-color: var(--liver); }
+  .filter-btn[data-cat="spleen"].active  { background: var(--spleen);  border-color: var(--spleen); }
+  .filter-btn[data-cat="urine"].active   { background: var(--urine);   border-color: var(--urine); }
+  .filter-btn[data-cat="repro"].active   { background: var(--repro);   border-color: var(--repro); }
+  .filter-btn[data-cat="adrenal"].active { background: var(--adrenal); border-color: var(--adrenal); }
+  .search-box { border-radius: 20px; border: 2px solid #ddd; padding: 0.3rem 1rem;
+    font-size: 0.85rem; outline: none; width: 200px; }
+  .search-box:focus { border-color: #2c3e50; }
+  .dx-select { border-radius: 20px; border: 2px solid #ddd; padding: 0.3rem 0.8rem;
+    font-size: 0.82rem; outline: none; background: white; color: #444; cursor: pointer;
+    max-width: 260px; }
+  .dx-select:focus { border-color: #8e44ad; }
+
+  .case-card {
+    background: white; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07); transition: all 0.2s;
+    margin-bottom: 1.2rem; display: flex; flex-direction: column;
+  }
+  .case-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+
+  .card-accent { height: 5px; }
+  .cat-skin .card-accent     { background: var(--skin); }
+  .cat-mammary .card-accent  { background: var(--mammary); }
+  .cat-lymph .card-accent    { background: var(--lymph); }
+  .cat-effusion .card-accent { background: var(--effusion); }
+  .cat-gi .card-accent       { background: var(--gi); }
+  .cat-liver .card-accent    { background: var(--liver); }
+  .cat-spleen .card-accent   { background: var(--spleen); }
+  .cat-urine .card-accent    { background: var(--urine); }
+  .cat-repro .card-accent    { background: var(--repro); }
+  .cat-adrenal .card-accent  { background: var(--adrenal); }
+
+  .card-meta { padding: 0.7rem 0.9rem 0.4rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+  .badge-cat {
+    font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 10px; color: white;
+  }
+  .cat-skin .badge-cat     { background: var(--skin); }
+  .cat-mammary .badge-cat  { background: var(--mammary); }
+  .cat-lymph .badge-cat    { background: var(--lymph); }
+  .cat-effusion .badge-cat { background: var(--effusion); }
+  .cat-gi .badge-cat       { background: var(--gi); }
+  .cat-liver .badge-cat    { background: var(--liver); }
+  .cat-spleen .badge-cat   { background: var(--spleen); }
+  .cat-urine .badge-cat    { background: var(--urine); color: #333; }
+  .cat-repro .badge-cat    { background: var(--repro); }
+  .cat-adrenal .badge-cat  { background: var(--adrenal); }
+
+  .card-img-area { position: relative; overflow: hidden; background: #1a1a2e; cursor: pointer; }
+  .card-img-area img {
+    width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.3s;
+  }
+  .card-img-area:hover img { transform: scale(1.04); }
+  .img-count { position: absolute; bottom: 6px; right: 8px; background: rgba(0,0,0,0.65);
+    color: white; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 10px; }
+  .img-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.45); color: white; border: none;
+    padding: 0.3rem 0.65rem; font-size: 1.1rem; cursor: pointer;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    min-width: 34px; min-height: 36px;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .card-img-area:hover .img-nav { opacity: 1; }
+  .img-nav.prev { left: 6px; }
+  .img-nav.next { right: 6px; }
+  @media (hover: none) {
+    .img-nav { opacity: 0.75 !important; display: flex !important; }
+  }
+
+  .card-body-custom { padding: 0.7rem 0.9rem 0.8rem; flex: 1; }
+  .card-body-custom h3 { font-size: 0.95rem; font-weight: 700; color: #2c3e50; margin-bottom: 0.15rem; }
+  .card-body-custom .dx-en {
+    font-size: 0.8rem; color: #5d6d7e; margin-bottom: 0.3rem;
+    font-style: italic; font-weight: 500;
+  }
+  .card-body-custom .site-info { font-size: 0.75rem; color: #888; margin-top: 0.15rem; }
+
+  .card-footer-custom { padding: 0.5rem 0.9rem; background: #f8f9fa; display: flex; gap: 0.4rem; }
+  .btn-sm-custom { font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 8px; border: none;
+    cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; transition: all 0.15s; }
+  .btn-gallery { background: #e8f8f5; color: #27ae60; }
+  .btn-gallery:hover { background: #27ae60; color: white; }
+
+  /* Lightbox */
+  .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92); z-index: 9999; align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lightbox-inner { position: relative; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center; }
+  .lightbox-img { max-width: 85vw; max-height: 78vh; object-fit: contain; border-radius: 4px; }
+  .lightbox-info { color: white; text-align: center; margin-top: 0.8rem; }
+  .lightbox-info h4 { font-size: 1rem; margin-bottom: 0.2rem; }
+  .lightbox-info p { font-size: 0.8rem; opacity: 0.7; }
+  .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15);
+    border: none; color: white; font-size: 1.8rem; padding: 0.4rem 0.8rem; cursor: pointer;
+    border-radius: 50%; transition: background 0.2s; }
+  .lightbox-nav:hover { background: rgba(255,255,255,0.3); }
+  .lightbox-prev { left: -60px; }
+  .lightbox-next { right: -60px; }
+  .lightbox-close { position: absolute; top: -40px; right: -10px; background: none; border: none;
+    color: white; font-size: 1.5rem; cursor: pointer; opacity: 0.8; }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-counter { color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 0.5rem; }
+
+  .no-img-placeholder { width: 100%; height: 180px; display: flex; align-items: center;
+    justify-content: center; background: #ecf0f1; color: #aaa; font-size: 0.85rem; text-align: center; padding: 1rem; }
+  .loading-img { opacity: 0; transition: opacity 0.3s; }
+  .loading-img.loaded { opacity: 1; }
+
+  @media (max-width: 576px) {
+    .lightbox-prev { left: -45px; } .lightbox-next { right: -45px; }
+    .lightbox-img { max-width: 92vw; }
+  }
+  .results-count { font-size: 0.82rem; color: #777; margin-bottom: 0.8rem; }
+</style>
+</head>
+<body>
+
+<div class="atlas-header">
+  <div class="container">
+    <h1>🔬 臨床病理學圖譜｜教學版</h1>
+    <div class="subtitle">Clinical Pathology Teaching Atlas &nbsp;|&nbsp; DR. WU</div>
+    <div class="stats" id="headerStats"></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="filter-bar">
+    <span class="label">分類：</span>
+    <button class="filter-btn active" data-cat="all">全部</button>
+    <button class="filter-btn" data-cat="skin">皮膚及皮下</button>
+    <button class="filter-btn" data-cat="mammary">乳腺腺體</button>
+    <button class="filter-btn" data-cat="lymph">淋巴結</button>
+    <button class="filter-btn" data-cat="effusion">體腔積液</button>
+    <button class="filter-btn" data-cat="gi">消化道</button>
+    <button class="filter-btn" data-cat="liver">肝臟</button>
+    <button class="filter-btn" data-cat="spleen">脾臟</button>
+    <button class="filter-btn" data-cat="urine">尿液沉渣</button>
+    <button class="filter-btn" data-cat="repro">生殖系統</button>
+    <button class="filter-btn" data-cat="adrenal">腎上腺</button>
+    <span class="label" style="margin-left:1rem">疾病：</span>
+    <select id="dxSelect" class="dx-select"><option value="">所有疾病</option></select>
+    <input type="text" class="search-box ms-auto" id="searchBox" placeholder="🔍 搜尋診斷名稱...">
+  </div>
+
+  <div class="results-count" id="resultsCount"></div>
+  <div class="row g-3" id="caseGrid"></div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="lbNav(-1)">‹</button>
+    <img class="lightbox-img" id="lbImg" src="" alt="">
+    <button class="lightbox-nav lightbox-next" onclick="lbNav(1)">›</button>
+    <div class="lightbox-info">
+      <h4 id="lbTitle"></h4>
+      <p id="lbSub"></p>
+    </div>
+    <div class="lightbox-counter" id="lbCounter"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+// Public image URL — works without Google login if Drive files are shared "Anyone with the link can view"
+function imgUrl(id, size=640) {
+  return `https://lh3.googleusercontent.com/d/${id}=w${size}`;
+}
+
+const CAT_LABEL = {
+  skin: '皮膚及皮下', mammary: '乳腺腺體', lymph: '淋巴結',
+  effusion: '體腔積液', gi: '消化道', liver: '肝臟',
+  spleen: '脾臟', urine: '尿液沉渣', repro: '生殖系統',
+  adrenal: '腎上腺'
+};
+
+const CASES = [
+  {dx:'前列腺增生', dxEn:'Prostatic Hyperplasia',
+   cat:'repro', site:'前列腺',
+   imgs:['1iCHNHGjdy03IJqVXeAJcyPvM8ANgmD3p','1ctNwTHgwDJJea7nH76bdiIwrYGfFxFB9','1IKwtXginbJ1wMRoz7AKi4AVFMWzvsP8K','10_TOtshWAgDcHI60ZmrafaLMnXBzaA7s','1C5qjoUNDOt_3yxnVJACucEuIrsCkisjx']},
+
+  {dx:'組織細胞瘤', dxEn:'Histiocytoma (Iba-1+)',
+   cat:'skin', site:'皮膚團塊',
+   imgs:['17du8JpPnTMpJL8-HRMLJ73HoLYrm6m7f','1moZ_gf2B-2GYfgboPBU611xx3mPrX9Qb','1KSaMHwpLJbJ3DPKIj07-U7Pf3_dChytJ','1MZPFbLr_bxJf_HhHat3No1ikFon6OrBt','1yIQoelVm4BDbiRnb51fgqVZkCFUHEM-U','1Cl2T71TKw4z3QR8QdQ5wCTvKAkJI8xuN','1Pbf-bZBbD8FQ09P5W2HxipDC2PSFzI9Y','1ey-RNqxaIUTbR9HM1jFdWICYS0w-oc2n']},
+
+  {dx:'球蟲', dxEn:'Coccidiosis (Fecal)',
+   cat:'gi', site:'糞便',
+   imgs:['1L7zCHBZnYBva_2QL_0zy3gtNRGWApKeT','1TipIW-gMYQsKnfzkPjuDzetqBKHiNNrH']},
+
+  {dx:'腸系膜淋巴結及腹腔團塊-淋巴瘤', dxEn:'Mesenteric LN & Abdominal Mass - Lymphoma',
+   cat:'lymph', site:'腸系膜淋巴結/腹腔',
+   imgs:['10mE4XTXWa-gVvPH3sQYBc5CPWAuQZbx6','1xTelSJNT448JFo4VAiaZ1ScvvyvYcBpS','1kHGTViYprquz4OmnTY1nJ1fdoHsbgHai','1xMpS5p4Z8zA0h3zixpPxhB8YpbkjLRcS']},
+
+  {dx:'脾臟血管肉瘤', dxEn:'Splenic Hemangiosarcoma',
+   cat:'spleen', site:'脾臟',
+   imgs:['1J6NvqLZv4O9mw0Qg9rOLz-3Yg4kxlSKu','1TLlBM5rtgMDdS0f6aU4S04KmeE-Etool','1-dOmYYfgLY_d3vVPzhdIAjagPDipPSRC','19UrT9qFjuw8dXtxfrqOtFQfKg91ozftm','1yjppInjk6VyFlzdCFj2c2YI8WbWZCO2M','1xy43TYdhrWMQQpd9XDzlP08DSy_sdyFW','1zp5Nh4MiRu1Ny4RPEGP02OxzTzw9b6CC','1pjrmrWPP3SbylvBeSJsFW52YHUp4E1kZ','1Hm_g6O7vkxp_d96Air4xD5VKCJhDxb28','1ssUGoGwtW55U18ZbuB-Mn96_dCmX1Kwf','1C5yZubnD1ZXgFhF2tggBnLcvv7HF5Ezr','10j6K4u3dZzfbq4y7sD5LBXCD1FDirU__','1S8FXpffYoFLNVST1fDscCFEiCRob42XC']},
+
+  {dx:'乳糜腹', dxEn:'Chylous Ascites',
+   cat:'effusion', site:'腹水',
+   imgs:['16SugMthwSsU5FwBfO_v6xYAB3YkoQ0Yi','1b5D8Dp7snqGrHv9SdlFAKkSrvVpAXF2I','1wciXNsbATAQbjEb1ys5aDkU8AxGOSvi9','1GN2iHWI43HEnZZZnOh4XAtgKZ4cjotu7','1jDtOH97-gH7M5pddueV9gqgsWi61UPcZ']},
+
+  {dx:'上皮囊腫', dxEn:'Epithelial Cyst',
+   cat:'skin', site:'皮膚',
+   imgs:['1lJrFqXbIEcCtT7p4KfuZqHVBclMIUknW','1raBqMCC0fecl2f2cPaiySyVlqTmqiROJ','1-UqYFqsiwYSwkD5EcT8rRU8ZljELqoib']},
+
+  {dx:'胸水', dxEn:'Pleural Effusion',
+   cat:'effusion', site:'胸水',
+   imgs:['14I0EbRZt4jTu0IXQhylT-oIhIF6Itbu6','131ECcPD-xLkc2D334zE6Kask-eHw_t9y','1IgaKT6DL_KFdBXaXwXyPAv14TnYs_uW9','1tKSkUTsSQTbp3dKue-6ychuXu0-D8iU6','1yfW0ssKGDr7zSdvi_4w2x39oUqMOoyOR','10ka_sNaG7sF5yQey_gdp0lCPBjsV0RdL','1uUO2uPP_MBI196HCyrl5v7lVjxqwbQYe','1e2-RbtEyZAyMbeGP9mYOwaTKGISJxTjT','1RGGKIrxfIjKsXBAKuEqqiOVvp-mZA6Je','1TXtNXfhiPx4lOk1HFIjY2l5obOKs6Dyu','1iAfteUkKoq5XelqQTKZkoHtBA8TbjVT5','1ZJeFHXDAMJCSezmfJO2oAGgQvo1dUSSj']},
+
+  {dx:'腸胃道嗜酸性球性硬化纖維增生症', dxEn:'Feline Gastrointestinal Eosinophilic Sclerosing Fibroplasia (FGESF)',
+   cat:'gi', site:'胃幽門/腸系膜淋巴結',
+   imgs:['1xnYRq5fagSZZ-pqDZjAklpFK9gZamnOl','1u7kDH1OB1AG77y9U4QX748VRGvdA30Yp','1W-Sj1o8UQIXjHG5SeQ0wlcmxgLGTnQPy','1Qu3KGKDHQYXhsyP8iLQUlMtOzXQSmmlF','1y-N05HUQJanE_m9gcIWNtc6nBH-dOKtE','10rLjpHZpaQtGz5A2wk-J3wxkQp4ZzBPm','124K76E5nyRdkGnLtawBlUsIRHuKtZUVI','1GD8DU88oeyuaLCG8rMYzJjvRaDtxkTdz','1kG5-qeGKMWTrmf232B6PbZbRGQRjyvb6','17Gcpvz8Y0IuljCnZG7kxH1IJyvnPjdQq']},
+
+  {dx:'尿渣-磷酸銨鎂結晶', dxEn:'Urine Sediment - Struvite Crystals',
+   cat:'urine', site:'尿液',
+   imgs:['1E6YLb9RV_JMJkbIIcHlMXB9KNHLmtgPQ','1mE6fARB8AyUYLKZ64bx4Z-JvCSBq4DdW']},
+
+  {dx:'左腎上腺-嗜鉻細胞瘤', dxEn:'Left Adrenal Pheochromocytoma',
+   cat:'adrenal', site:'左腎上腺',
+   imgs:['1AXjq7pSxHC0ZoIfjcT2hxLaBtlN80vZz','1vL2GMTWTafkZIcjyJecpp9-USkMiRKzk','1CmHz3j-tcLIEYQmlgX9AcDwqTh6XLYKl','1KP_QHIGaNqWa_Sw1mUOQklyd6sEMtNdk','1NyVSQje9LczAc0QSsRc8iIgAI3cM3aQx','1Ew_K5eFo_srkxYrzezR_JxQxePSh8NVW','1D-KecJlyQRL8kU-04YN-oPLaB2o9ZkfC','1AoOxPAszGSRFSwRHLJtQ6hgC52TVTLLK','1Tn4DPVWStHq0s4-iA0STq1EzwgjxhOXC','1fHnILWfS7oJZ9yGklTFBwqNYoLalv_9z','1DdRZEktPAK5JzmCVziHJ4M37QRKtuvz-','1GwNPO0DctYomw99dsT6cKS6xE3bz_VmD','1F_CDc2IosUAQ4jhFt1K1JNe6w-NWXJ2C','1jiqv3hjHRHWW7TK-tlHNqwTlNOwr5XF0','1UR-xeIKkzWTb8OQdDE3xMJEmaq73DaKh','1lYm9_yV4vrGpJ6Blluwr5UvyQA-OjBja','1eEcmHr7I-6YYH9-yHY4o5qZM_JAW_4Yw','14WGcmfZcMpAgWacjQ2EK_pdZ5-2oicx6']},
+
+  {dx:'胸水-貓傳染性腹膜炎(FIP)', dxEn:'Pleural Effusion - FIP (FCoV RT-qPCR+, IFA+)',
+   cat:'effusion', site:'胸水',
+   imgs:['1hKVX9mSuJWr7dFNzowLgsXIInzQSjfV0','10gIm04OLBD7ES0nOxMoDE6Eot48JedoD','16pg1NdpUdoFAKIe-G5ynGO-HBy2pkR55','1_3XnXOnl5DNXQ7yDZML_Av0N1RDyy7yV','1YuP-0WXRKgz5STSXd3JDI8UfKCOdVBRc']},
+
+  {dx:'胸水-淋巴瘤', dxEn:'Pleural Effusion - Lymphoma',
+   cat:'effusion', site:'胸水',
+   imgs:['106_zPukVSAocPHIvkX-zrJVM8BT_ESY0','1m84zuj67RHa2it-LaX7E62tjYeTBBGH-','17sRxOOElhv2sAHe-1F3I-zd5QwmW39Tc','10eugCHVZYCE5xIqCr08gCcwCzK7-JHYB','1QOVdeNc1RduK91ttDWR0dAT5JWjOu0Ip','1OVl-LwZS_8OS2j2H_CvmJpmuWZRZWzwS','10CdmI_UycWmM0mspXqYe5_ZHcnOhm3Uh']},
+
+  {dx:'乳糜胸', dxEn:'Chylothorax',
+   cat:'effusion', site:'胸水',
+   imgs:['1ib5xoqN3KRgDCdOQZbi47LxtghgoWr7z','1p3bLlN1M6ieeVd0PgF7rIyTW5K0gB3_e','1rcdrbAiLmpJSO79S97WRRmtoYoFDlgE5','1vb25LdGUNqu2cR7osXQ9arUHeakGsJku']},
+
+  {dx:'胃淋巴瘤', dxEn:'Gastric Lymphoma',
+   cat:'gi', site:'胃(FNA)/胸水',
+   imgs:['1_GfcJwymsoAppQKBULkPjlH1GNWDZYow','1kwgloBczI04mQRybEt4s9uejHUJUHJbc','1e63FSDN7aC7NnKh9F061nVRFwiJC_Bzr','10jdbecMoLkCsFa441iYtvj6p7S1hvfU5','11J7A7gAxc3E59I5zKwD5WSDd3p7I6_Z8']},
+
+  {dx:'體表化膿性肉芽腫', dxEn:'Cutaneous Pyogranuloma',
+   cat:'skin', site:'體表',
+   imgs:['1U32E35jlnJWaPIrWzicnOKNeeiRaBQw2','1CKYSlefeKWh-hc5IyRx-JjkkqWh7aBHB','1JjlKiGZCsH2jw0PXDjCCKQuTl7pXg7rw','1daXrjGsJ6DTr9kbnhupO4TL4AkdiyrtT','1Wc4fqwq7woVdJULsotJbGrROfyPnfi9y','1aV5ZvZ9dBFVuCqb8icKV3lw9RfHQTQwX','1yuTe5yMBYFMP5zgd4LWJQ11RsVNeKUV3','1YiqRnih06wIk4ZOGFo8_iYzeqP_bwbFv']},
+
+  {dx:'多中心型淋巴瘤', dxEn:'Multicentric Lymphoma',
+   cat:'lymph', site:'淋巴結',
+   imgs:['1EP-Ut4EUCCd5ZxQZLY0bW5YCIjokHLfP','1RoOHHMcAW7QSoiEnnXK7oviGjPXQdZbW','1r83VWHFpV5e6zKzjpnB43OzDW643djzC','1Ap5LzmtohV8AGR-sfH09BCoS0__5ty9w']},
+
+  {dx:'乳腺腫瘤（胸水轉移）', dxEn:'Mammary Gland Tumor with Pleural Metastasis',
+   cat:'mammary', site:'乳腺/胸水',
+   imgs:['19awGzwN8YZha3rDsIaTHy04-Sd4A5UlT','1zG-idaBw7KZAPiKGzTgiHysFiHAo6gS7','1qkVBDoGr-omKfsY1l2Kc44CVXLYeC5Va','1YIOBzGfkP436xMRO0Qwe32Kz7UICuTvd','1Z5bOLqEIl0eXEAKi8TBOCs8bTIvcb9oQ']},
+
+  {dx:'尿渣', dxEn:'Urine Sediment',
+   cat:'urine', site:'尿液',
+   imgs:['1ozEcakucZSbW8AzeLuYYssIoT0-dnD13','1OF4vLiezs4n2Mn8zjr4m0U0lsIsNyvew','1KnHcO7kFzGWpCKcrwFKweZm09oA876mt','19-EVbIFmW6g6eAOprL_8XntqfXy9PivW','1fqikTZ6Z2A8xPCofqQa3belBDKvpUV_2','1JppRX1R78RZgFAiw7ncWoYhSfvyBXqUL','1Q3z7roKWpx-eRs-kZVxS497tZ1MxG3c0']},
+
+  {dx:'尿渣', dxEn:'Urine Sediment',
+   cat:'urine', site:'尿液',
+   imgs:['1vLbMlOHg1H0r9rNrhMxCqZjXR05TimZN','1NZj_X-K3u8p1ifb1QAUG-cLspAQ7_-ch','12W6cPR3NpxejfrHgcNWJC3QkdyZLRD6G','1vkbBK7k53SwL7b9cJHGhPbXkCuIn7OMc','1-L0QGRxRm6lPPGVaiBsoDql0wltjBQM2']},
+
+  {dx:'直腸原位癌/腺癌', dxEn:'Rectal Carcinoma in Situ / Adenocarcinoma',
+   cat:'gi', site:'直腸團塊（採樣）',
+   imgs:['1ZKlp2yQP6KlfbXzc01-4aq7IqF_p2Swp','1R6oH0nmC168hLc2j4rABNdWEHdhJp55y','1fYQqV9Lb_PR3AKEQEKsUDt_dfR-99Xpt','1o4loqiwj5W_OXktnMLFV4w2OR54Bc_fy','11xSG-_mkXkiJT08INal83qkGR9DRPhZR']},
+
+  {dx:'腺癌（指端轉移/胸水）', dxEn:'Adenocarcinoma with Digital & Pleural Metastasis',
+   cat:'mammary', site:'指端/胸水',
+   imgs:['1Q-sXgRMlZ5aQwUzTbYxfiSk5UwRLf8jF','1ETrn-AavncFrPeqDXhsjzTE5grC1I8Cb','141SkZc0n1wKnT6HzcTpd83-KFyTz4_Kb','1AdO-yOB--8HbAKii-mr48QNoWdq3GXyS','1sNxPHtxp4KlLzrjCULeuEAycDWKhRerB']},
+
+  {dx:'腸系膜淋巴結-淋巴腺炎', dxEn:'Mesenteric Lymphadenitis',
+   cat:'lymph', site:'腸系膜淋巴結',
+   imgs:['1j04pr4aezv06BEXBJoBTJoN3MnWLzUlj','1CRtHWLZ2jxiTRtbeOGlUNm605RxZgfD3','1NGswXrAXzaVTdwFl7LJLvc_S4pKz-Q5e','1STZT27xy7OqqGOSf1GiC6K4EsVLhJqkF']},
+
+  {dx:'膽汁-細菌', dxEn:'Biliary Bacteria (Cytology)',
+   cat:'liver', site:'膽汁',
+   imgs:['1fHJn5Zm1FBVbkVwXAK55QcWEmWTOyaIV','1qLz4Ab8b-9NfxDpoO-9z4b6kdlwwwu4c','14_YZlv192M_GM-HcreuCNssR9aRGBBu8']},
+
+  {dx:'嗜酸性肉芽腫', dxEn:'Eosinophilic Granuloma',
+   cat:'skin', site:'皮膚/黏膜',
+   imgs:['1algIViYe8DhALDBUUf5edLQDAfVynUuo','1UyI6aAkXLv-fWIQQBEJKMnswB0be71D3','1xUwLNbkFpI8ochMUoEbTOZPxa4k6opaP','1OiaEmIeq0VBZ1ibUDUy3Mv3tjLLLk00v','1RHcOav7U3WgS1yt35eiR2VKfCRbDli6J']},
+
+  {dx:'額頭皮下-淋巴瘤', dxEn:'Subcutaneous Lymphoma (Frontal Region)',
+   cat:'skin', site:'額頭皮下',
+   imgs:['1zazNs5jhUtAQCOzR74FYHicpr-EA-PGJ','1qSEg8zCd5JQ_QHVLJ3IBgd6TjoUvBbUH','1A0P3_1KWid9eTH5EZpCOSbwO6W3SbciB','18V6Yz0dfhwK5iFiC8yQ8ZuRC-rXe16eA','1Z-cqHtSlxwTam8v3tW13vnYSSUoc3-Fj','1dg8eWPi2v_XJq-Nan9BJZHWzXiEB8LyN','1W-fn8ElW8qb6bekwBUT6aXfDK_WbZjsC']},
+
+  {dx:'前列腺化膿', dxEn:'Prostatic Abscess',
+   cat:'repro', site:'前列腺',
+   imgs:['14rvDlcWF3Foq0AfB-wZUJFrf_UCFSJ7F','1bq0RNfd1W2VsaqetdFCyB7j5ey1QcWng','1Ml4GQBaXmTeBzs2wZwf-RxW2-JY634XV','1yUVZ9iLNPcM_Z7kSom-tsmjxi51dJPpF']},
+
+  {dx:'脾臟-髓外造血', dxEn:'Splenic Extramedullary Hematopoiesis',
+   cat:'spleen', site:'脾臟',
+   imgs:['1N-EjjMHfX_dP-Se0Yp54IJYXvQ0eHxoK','179B22EXu_2WuxjCPbd40vulsew8hPmbf','1mf106wpHH8m6qlt79kUxeUGACBMP50lB','1WVDoBmuTCB67b6w3swsGO1pyGk6xqVJs']},
+
+  {dx:'Hepatoid Cell Tumor', dxEn:'Hepatoid Cell Tumor (Perianal Gland)',
+   cat:'skin', site:'皮膚腫塊',
+   imgs:['1wvuQ2qI1ST-QdB3kZufdzuFpEUye7P9d','1v2l4zxSckp61eFxFLZUiDywS4tVFGq7h','1TiqrXJiR7RNEhKa9TqQXX1VzGRzRfDv6','1Vwq1Q11TEJrAd6_dN-uB0UA1LyG2UBDh','1jmutM9KTEp8qXN6Q6ZTufEeamuQPu_Uv','1qA171mKU-6h8CmxUtbNSOz-H8982JFPr','1rFO5jZ3zVYz_Kz6M3ubc-joJarunBgt8','1ARjSiHQMCcqo19yDL4RsELDxdgpd9vYZ','1FGjho77Gh2dYUBkby0h1l98Av_EDkt6v']},
+];
+
+// State
+let currentCat = 'all', searchQ = '', currentDx = '';
+let lbCaseIdx = 0, lbImgIdx = 0;
+
+// Populate disease dropdown
+(function() {
+  const sel = document.getElementById('dxSelect');
+  const dxList = [...new Set(CASES.map(c => c.dx))].sort((a,b) => a.localeCompare(b,'zh-TW'));
+  dxList.forEach(dx => {
+    const opt = document.createElement('option');
+    opt.value = dx; opt.textContent = dx;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', function() { currentDx = this.value; renderAll(); });
+})();
+
+function renderCard(c, idx) {
+  const firstImg = c.imgs[0];
+  return `
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 case-card cat-${c.cat}"
+         data-cat="${c.cat}" data-search="${c.dx} ${c.dxEn} ${c.site}">
+      <div class="card-accent"></div>
+      <div class="card-meta">
+        <span class="badge-cat">${CAT_LABEL[c.cat]}</span>
+      </div>
+      <div class="card-img-area" data-case-idx="${idx}" data-img-idx="0"
+           onclick="openLightbox(${idx}, parseInt(this.dataset.imgIdx))">
+        <img src="${imgUrl(firstImg,640)}"
+             alt="${c.dx}" class="loading-img"
+             onload="this.classList.add('loaded')"
+             onerror="this.parentElement.innerHTML='<div class=no-img-placeholder>圖片未能顯示<br><small>請確認 Google Drive 已設為「任何人可查看」</small></div>'">
+        ${c.imgs.length > 1 ? `
+          <button class="img-nav prev" onclick="navCardImg(event,${idx},-1)">&#8249;</button>
+          <button class="img-nav next" onclick="navCardImg(event,${idx}, 1)">&#8250;</button>
+          <span class="img-count" id="cnt-${idx}">1 / ${c.imgs.length}</span>` : ''}
+      </div>
+      <div class="card-body-custom">
+        <h3>${c.dx}</h3>
+        <div class="dx-en">${c.dxEn}</div>
+        <div class="site-info">📍 ${c.site}</div>
+      </div>
+      <div class="card-footer-custom">
+        <button class="btn-sm-custom btn-gallery" onclick="openLightbox(${idx}, parseInt(document.querySelector('.card-img-area[data-case-idx=\"${idx}\"]')?.dataset.imgIdx||0))">
+          🖼 圖片 (${c.imgs.length})
+        </button>
+      </div>
+    </div>`;
+}
+
+function renderAll() {
+  const grid = document.getElementById('caseGrid');
+  let html = '';
+  let visible = 0;
+
+  CASES.forEach((c, i) => {
+    const catMatch = currentCat === 'all' || c.cat === currentCat;
+    const dxMatch  = !currentDx || c.dx === currentDx;
+    const q = searchQ.toLowerCase();
+    const searchMatch = !q ||
+      c.dx.includes(q) || c.dxEn.toLowerCase().includes(q) || (c.site||'').includes(q);
+    if (catMatch && dxMatch && searchMatch) { visible++; html += renderCard(c, i); }
+  });
+
+  grid.innerHTML = html;
+  document.getElementById('resultsCount').textContent =
+    `顯示 ${visible} / ${CASES.length} 個病例`;
+  addCardSwipe();
+}
+
+function navCardImg(e, caseIdx, dir) {
+  e.stopPropagation();
+  const c = CASES[caseIdx];
+  const area = document.querySelector(`.card-img-area[data-case-idx="${caseIdx}"]`);
+  if (!area) return;
+  let cur = parseInt(area.dataset.imgIdx || 0);
+  cur = (cur + dir + c.imgs.length) % c.imgs.length;
+  area.dataset.imgIdx = cur;
+  const img = area.querySelector('img');
+  if (img) { img.classList.remove('loaded'); img.src = imgUrl(c.imgs[cur], 640); }
+  const counter = area.querySelector('.img-count');
+  if (counter) counter.textContent = `${cur+1} / ${c.imgs.length}`;
+}
+
+function addCardSwipe() {
+  document.querySelectorAll('.card-img-area[data-case-idx]').forEach(area => {
+    let sx = 0, sy = 0;
+    area.addEventListener('touchstart', e => {
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    }, {passive: true});
+    area.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      const dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy)) {
+        const ci = parseInt(area.getAttribute('data-case-idx'));
+        navCardImg({stopPropagation:()=>{}}, ci, dx < 0 ? 1 : -1);
+      }
+    }, {passive: true});
+  });
+}
+
+// Filters
+document.querySelectorAll('[data-cat]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentCat = this.dataset.cat;
+    renderAll();
+  });
+});
+document.getElementById('searchBox').addEventListener('input', function() {
+  searchQ = this.value;
+  renderAll();
+});
+
+// Lightbox
+function openLightbox(caseIdx, imgIdx) {
+  lbCaseIdx = caseIdx; lbImgIdx = imgIdx;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+function lbNav(dir) {
+  const c = CASES[lbCaseIdx];
+  lbImgIdx = (lbImgIdx + dir + c.imgs.length) % c.imgs.length;
+  updateLightbox();
+}
+function updateLightbox() {
+  const c = CASES[lbCaseIdx];
+  document.getElementById('lbImg').src = imgUrl(c.imgs[lbImgIdx], 1600);
+  document.getElementById('lbTitle').textContent = c.dx;
+  document.getElementById('lbSub').textContent = `${c.dxEn} | ${c.site}`;
+  document.getElementById('lbCounter').textContent = `${lbImgIdx+1} / ${c.imgs.length}`;
+}
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft')  lbNav(-1);
+});
+
+// Lightbox swipe
+let _lbTx = 0;
+document.getElementById('lightbox').addEventListener('touchstart', e => {
+  _lbTx = e.touches[0].clientX;
+}, {passive: true});
+document.getElementById('lightbox').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - _lbTx;
+  if (Math.abs(dx) > 40) lbNav(dx < 0 ? 1 : -1);
+});
+
+// Stats
+document.getElementById('headerStats').textContent = `共 ${CASES.length} 個病例`;
+
+renderAll();
+</script>
+</body>
+</html>
