@@ -267,10 +267,6 @@ const CASES = [
    sp:'dog', morph:'round', cat:'skin', site:'皮膚團塊',
    imgs:['17du8JpPnTMpJL8-HRMLJ73HoLYrm6m7f','1moZ_gf2B-2GYfgboPBU611xx3mPrX9Qb','1KSaMHwpLJbJ3DPKIj07-U7Pf3_dChytJ','1MZPFbLr_bxJf_HhHat3No1ikFon6OrBt','1yIQoelVm4BDbiRnb51fgqVZkCFUHEM-U','1Cl2T71TKw4z3QR8QdQ5wCTvKAkJI8xuN','1Pbf-bZBbD8FQ09P5W2HxipDC2PSFzI9Y','1ey-RNqxaIUTbR9HM1jFdWICYS0w-oc2n']},
 
-  {dx:'球蟲', dxEn:'Coccidiosis (Fecal)',
-   sp:'cat', cat:'gi', site:'糞便',
-   imgs:['1L7zCHBZnYBva_2QL_0zy3gtNRGWApKeT','1TipIW-gMYQsKnfzkPjuDzetqBKHiNNrH']},
-
   {dx:'淋巴瘤', dxEn:'Lymphoma',
    sp:'dog', morph:'round', cat:'lymph', site:'腸系膜淋巴結/腹腔',
    imgs:['10mE4XTXWa-gVvPH3sQYBc5CPWAuQZbx6','1xTelSJNT448JFo4VAiaZ1ScvvyvYcBpS','1kHGTViYprquz4OmnTY1nJ1fdoHsbgHai','1xMpS5p4Z8zA0h3zixpPxhB8YpbkjLRcS']},
@@ -339,10 +335,6 @@ const CASES = [
   {dx:'乳腺瘤', dxEn:'Mammary Tumor',
    sp:'cat', morph:'epithelial', cat:'mammary', site:'乳腺/胸水',
    imgs:['19awGzwN8YZha3rDsIaTHy04-Sd4A5UlT','1zG-idaBw7KZAPiKGzTgiHysFiHAo6gS7','1qkVBDoGr-omKfsY1l2Kc44CVXLYeC5Va','1YIOBzGfkP436xMRO0Qwe32Kz7UICuTvd','1Z5bOLqEIl0eXEAKi8TBOCs8bTIvcb9oQ']},
-
-  {dx:'尿渣', dxEn:'Urine Sediment',
-   sp:'unknown', cat:'urine', site:'尿液',
-   imgs:['1vLbMlOHg1H0r9rNrhMxCqZjXR05TimZN','1NZj_X-K3u8p1ifb1QAUG-cLspAQ7_-ch','12W6cPR3NpxejfrHgcNWJC3QkdyZLRD6G','1vkbBK7k53SwL7b9cJHGhPbXkCuIn7OMc','1-L0QGRxRm6lPPGVaiBsoDql0wltjBQM2']},
 
   {dx:'原位癌/腺癌', dxEn:'Carcinoma in Situ / Adenocarcinoma',
    sp:'dog', morph:'epithelial', cat:'gi', site:'直腸團塊（採樣）',
@@ -440,6 +432,61 @@ const CASES = [
    sp:'cat', morph:'spindle', cat:'skin', site:'皮下',
    imgs:['1A_UHE1tEaXZvY4rJv6StsKBK0lRFBMco','1v1g8DiIrZCClVFRBuLQE0pMHYF3Ttl2i','1plCLlp23h-OZ7mGeUoZTFjHf9vPw7yWA','1-gQSLxAS2aGfQ9dOU9-73WogDAd0vmPP']}
 
+  {dx:'顆粒性淋巴瘤', dxEn:'LGL Lymphoma (Thoracic Effusion)',
+   sp:'cat', morph:'round', cat:'effusion', site:'胸腔',
+   imgs:['18bsH6HtfYo3kMrf8gIu8pt4CtcNm5BoT','16Y1V52Ysa-3m0zV6Zkbo1ZnkVMP-0Qks','1lGooBkLvOO4lmWFIG-0ZaqyotneSmvYi','1PRVOmRYAy_nqKZW3fyJwAS4sLAB1zyMy','1LHlI1kmGGSYZgubjiKyZ2cyiIE_Tw2EB','12_5H-K3Ck7ysjVR5bCrnBz1fzVsaQUyY','1PllTaex4I9kIku7zfch33nCyrwFhb73R','1ZdfJqntCizlbdaC8WyOGtvNOCCr9vTx6']},
+
+  {dx:'上皮囊腫', dxEn:'Epithelial Cyst',
+   sp:'dog', morph:'epithelial', cat:'skin', site:'皮膚',
+   imgs:['1nJhIYf4gkDNFEI3FJITEcuNPFpT40zgT','1oVSoynScCTtUoF7TkAaGVKhRq4Ovfu-9']},
+
+  {dx:'結節樣增生', dxEn:'Nodular Hyperplasia (Liver)',
+   sp:'dog', morph:'epithelial', cat:'liver', site:'肝臟',
+   imgs:['17QHe_0u5DWXzWjRGcHYJ1tjTDLWWL_6f','1_FA4VRQSxj4E36dv00qx71jAvx07XaMx','1ZyIHP9Kz9EwGbApjifCQfwnXWwZ0dtKI','1aMGJjkxd-Ay9jwgy48x92HonkW6JHXvM','1V-uYcR5o5Eqff9CuSW2lVMvQaR9GW_qR']},
+
+  {dx:'肥大細胞瘤', dxEn:'Mast Cell Tumor (MCT)',
+   sp:'dog', morph:'round', cat:'skin', site:'皮膚',
+   imgs:['1MPYypw0LyETCB5jdQDVLl8BxwnOMlxNY','15xtw1m5R_yuuuT0HYoAwog7QXmg84sKY']},
+
+  {dx:'移行細胞癌', dxEn:'Urothelial Carcinoma (UCC)',
+   sp:'dog', morph:'epithelial', cat:'urine', site:'膀胱',
+   imgs:['1HVmcPvwXo3-DWzNR_BZlZuGml1OSsB7s','14XH2IJ0oTlenZQ_PnCfDJ_gaSPsZ5Rwj','1UVTZFdDE6_vfw7-voxNFXmAnvSfAcLyd']},
+
+  {dx:'移行細胞癌（典型）', dxEn:'Urothelial Carcinoma (Classic UCC)',
+   sp:'dog', morph:'epithelial', cat:'urine', site:'膀胱',
+   imgs:['1xbUd8E3ElKbcPuc3Qe4rpPwECdRMCfDT','1uke2Wh03SXuwJBEFLB28XNxra98-NpY6','1HvGCBgJS12FlBctVw90I-dfMVkuvC1s2','1do_xjLypZ_4HXvHCSxAV_6kNfXIILN6V','1WJ71EebYDqQFjFym2eruh6ErlaXb9ydK']},
+
+  {dx:'大顆粒淋巴球性淋巴瘤', dxEn:'LGL Lymphoma (Intestinal)',
+   sp:'cat', morph:'round', cat:'gi', site:'腸道',
+   imgs:['14QDhPdT3BOYLAcodNM3DH1-eRbk0MIfk','1SrHALNZv6EculRRYdlcQuAQ9a_w9oyTL','1BXOm_rBu6uZ_i8KetBOLfFVzfmnoKM5z','1IbazIIMjAe29K0YIUY6hLtkB71yV1XkQ']},
+
+  {dx:'臆窩腫塊', dxEn:'Axillary Mass (NOS)',
+   sp:'dog', morph:'mixed', cat:'skin', site:'右側臆窩',
+   imgs:['1FuR_qXWJRTWtR9-2fou6ectEu249Vbww','1knNFlu4JrkmYGRhUQxyGmG1Hgwsf_aoO','19Z7vVoN0gAGhqv0dWKDCI5awvmeV0qj5','1LvnRBNkVpzH0RbdmKVATb2btVc6Yn5Gp']},
+
+  {dx:'上皮囊腫（肛周）', dxEn:'Epithelial Cyst (Perianal)',
+   sp:'dog', morph:'epithelial', cat:'skin', site:'肛門周圍',
+   imgs:['1saR-00sqxzyObawFYbOU0mNRldRH7U51','1va7OcYmXUzun6y_tDnKAdigb1BvIfMlO']},
+
+  {dx:'脾臟惡性肉瘤', dxEn:'Splenic Sarcoma',
+   sp:'dog', morph:'spindle', cat:'spleen', site:'脾臟',
+   imgs:['1Ps2SzUMCveDwjMHfMv9gTnXsCKa7pcbj','1F4aaImnyb4xKg90FncxisGbwO4t0ejJQ','1IgapXmYzo9iwsXuse1rxzjCg_MPCL_5d','1VLUq479Cfrvt-I8dQdUOQH6P4GaDgg0k','1L1a7_NTTtakFkVDrP9OM0T_I45Es-B87']},
+
+  {dx:'膿胸', dxEn:'Pyothorax',
+   sp:'cat', morph:'inflammatory', cat:'effusion', site:'胸腔',
+   imgs:['1eCYFG52umd3gJ0_F2ewFv7cdyPuFTepA','1cgAbSr3XRa5UJ5ptC_NumVDtpURovWdK']},
+
+  {dx:'肛周腺瘤', dxEn:'Hepatoid (Perianal) Adenoma',
+   sp:'dog', morph:'epithelial', cat:'skin', site:'肛門周圍',
+   imgs:['1INoQql9j8U5p7AfaDYDczW5RPzuQ4p8Y','1o4IILW9ZxQNKNN8EmluqXo9W1uNjf1kr','1YUADnnt5S995kX-qKDjahTm99RbhO6cM','1IY6egXg_eWjh__mkwOfXT1fpkD_DYW66']},
+
+  {dx:'胃淋巴瘤', dxEn:'Gastric Lymphoma',
+   sp:'cat', morph:'round', cat:'gi', site:'胃',
+   imgs:['1aFpjMQ6Cd_PCbZHTFWTi_OixMfmNUy5s','1_gOKmAXQs9MRnyVd3gzM2WxIu4nmPQT9','1cFhXS-8oZ9Xy4vWIx1uD_RjcA5J8cXmR','1J6j4RXQFWsan9dN-0G2PxPPAF3BR5hyQ','1GZxYkuffjC_beyNSnPqIDfUF0qcZqKST','1wrkDjSevEJP6K3xbqLVuEWfIY3jCdbsy']},
+
+  {dx:'口腔黑色素瘤', dxEn:'Oral Melanoma',
+   sp:'dog', morph:'round', cat:'skin', site:'口腔/舌頭',
+   imgs:['1YhEPmWmDWJR3i0kMZeo-d_XNWQhWpGEJ','12HR61XQY_9vPRA_LAHXQfzZJqGBesbBC','10DtA9jYUXBeDdzsKFMY7UFTND6CiiBsF','1btb69qCCbLaIXhlniMjif4pu3C3U6k2F','16nRxK9IhhC0N4xf_LgYneqFIHgE4Ubji','1GHe9sYeRKKL5mPJL8F_ystfxSWkqEiIa']}
 ];
 
 // State
