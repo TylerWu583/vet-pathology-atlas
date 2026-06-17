@@ -25,6 +25,7 @@
   --skin-scrape: #4e342e;
   --platelet: #f57c00;
   --parasite: #00695c;
+  --resp:     #0277bd;
   }
   body { background: #f5f6fa; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
   .atlas-header {
@@ -62,6 +63,7 @@
   .filter-btn[data-cat="bone_marrow"].active { background: var(--bone-marrow); border-color: var(--bone-marrow); }
   .filter-btn[data-cat="platelet"].active { background: var(--platelet); border-color: var(--platelet); }
   .filter-btn[data-cat="parasite"].active { background: var(--parasite); border-color: var(--parasite); }
+  .filter-btn[data-cat="resp"].active    { background: var(--resp);    border-color: var(--resp); }
   .filter-btn[data-cat="urine_sed"].active   { background: var(--urine-sed);   border-color: var(--urine-sed); }
   .filter-btn[data-cat="fecal"].active       { background: var(--fecal);       border-color: var(--fecal); }
   .filter-btn[data-cat="skin_scrape"].active { background: var(--skin-scrape); border-color: var(--skin-scrape); }
@@ -124,6 +126,7 @@
   .cat-repro .card-accent    { background: var(--repro); }
   .cat-adrenal .card-accent  { background: var(--adrenal); }
   .cat-urinary .card-accent  { background: var(--urinary); }
+  .cat-resp .card-accent     { background: var(--resp); }
 
   .card-meta { padding: 0.7rem 0.9rem 0.4rem; display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
   .badge-cat {
@@ -140,6 +143,7 @@
   .cat-repro .badge-cat    { background: var(--repro); }
   .cat-adrenal .badge-cat  { background: var(--adrenal); }
   .cat-urinary .badge-cat  { background: var(--urinary); }
+  .cat-resp .badge-cat     { background: var(--resp); }
 
   .badge-sp {
     font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 10px;
@@ -306,6 +310,7 @@
         <button class="filter-btn" data-cat="repro">生殖系統</button>
         <button class="filter-btn" data-cat="adrenal">腎上腺</button>
         <button class="filter-btn" data-cat="urinary">泌尿道</button>
+        <button class="filter-btn" data-cat="resp">呼吸道</button>
       </div>
       </div>
 
@@ -687,6 +692,31 @@ const CASES = [
    dx:'免疫媒介性溶血性貧血', dxEn:'Immune-Mediated Hemolytic Anemia (IMHA)',
    cat:'blood_smear', site:'血液抹片',
    imgs:['1dsunPAXE4iUwGS9Zdoy2OZL6uB9NaSZD','1jUt-wpbR2amT83xjv06gY4JYa1xEBy6t','1S-YqlDDxzSsmF0CK_FyeqYJBtiZIE1US','1Trxzsa0yfgHdO-yimISzxjXwA3GjuLSO','1UnVKtzWqt1W4LYI9LOqWtGa2WdhyLHxP','1ieb2KoFQnkDMbQZPPi--Y5EJE121V-eG']},
+  // 屏科大細胞學（2026-06-18）
+  {sp:'dog', dx:'肥大細胞瘤', dxEn:'Mast Cell Tumor (MCT)',
+   cat:'skin', site:'皮膚', morph:'round',
+   imgs:['1OpMebVYumadfwByy8u6JCd_8v-8_GxDy','1-kioCr0lp0bpt6SQ4lfc1nHHk8KEjGyz','13oVLDlhMlBdH-UIWR6Oy0NvfRrpiQpIs','1x13v7IMuMe3Hi15wxzAdBnFMcnQb_UPp','1CmnzKsEa8lV4__AEvfzTA-veabxj2y3I','1g3bh2jrU7TzwEvVCE1eiireFuwBFETIv','1mA9XCvb6giH1mRX4NRaq3o1Y7KCcTT6E','13e1pJ9_jOE8851wWfj0NFDqImzDVduYd']},
+  {sp:'dog', dx:'黑色素細胞瘤', dxEn:'Oral Melanoma',
+   cat:'skin', site:'口腔', morph:'round',
+   imgs:['1yYNPsqbsrq9-rfQIdpFksm1qw4qh3LFb','1mZ7h5WVPYeOyx6-Fh51rg75LLZvizl8j','1Z4sznez7TskiHRGLm66MSKsaej40H46d','19D7h91C2m14l1HoCfCO2END3DEE7H-Ik','1eEHR3tb4sq6jZeLlOyghi5o2xsM6Djql','10WDa1_2LqzqlB64sehfaNWFFfcNAIXsz','15-39Sie5mM0Fz0_mx6MW1T_hC2hi5aFu','1_S43Cx7IwcX8cMnfP_DlncdxFHMR0X93','1jPCXmkSdIEQBwktMNXV_ZgGzjsmdLnvM','1FJWyQHF__6coIqlLjqLpwrpv5IGuI8M6','1OjNbgEDfU4RlGzWeV9gGw8MNqfq057QI','1au_NLcyZ561oOJKr6CWS_l7MdzjmcIed','184i9pQZaFn_pXzLrf3A9_tONXX5gF8UV','1mcVa8eedZy9JNOLYkTz-Y30VzGjzDfk1','1brxODW8vlumsBtA1CM90kQCUskmdMY3b','1MK2-Lb9FNCVXFt8VrExGsSGy1KYp7oL6','1w1vtc906Q7gtejCKT4QkZ6WQZIh07i8u']},
+  {sp:'dog', dx:'淋巴瘤', dxEn:'Lymphoma',
+   cat:'lymph', site:'淋巴結', morph:'round',
+   imgs:['1trXdFjdzZRmtjPVGcSWQQkl1dY4kDOmW','1NFGw3FmVHg1H-tM6lb5SpO59XhREDGIg','1IOtpnleEVaZ9OQY-B4YuC5vtVMqSLECX','1VUsYvWwgx5j2K8FmX75J1buyzk7hiZZ9','1u7KBL1kfaaGVv-qHL8lxszr8Px6G0lYZ','15f9pJUzjnpd9STyq_iI4iuqTCGOm11C4','1Dsf2TlBLY9S4aP-wK8QSiUvSt3SzLjWe','1Gg4_amz-cCsxSjQnnFTufO9HuN9W4FUj','17h5A2anu8_xwcQdBboR7RCENiYaa0-J5','1MV4MVi4MHdPB7ppL7AD4PTFQP-iTHYoL','18JSqS-1mBzRv0QWi4qGCNwhBWaDUUk2n','1qMLgipXePLKH5EGO5JhF8e9L93qZ8r7v','195M3DiATkMaBW-yUiaJVFWWONyh_HiWR','17ACQb76UunvU4HkDsfRl8k1RnCv2kfs8','1TpPlS-pZvVtAkHOxoX0HzeVzPfMplu14','1F63tJl7QHq__e14WuB7Tsg7PpnfVPUts']},
+  {sp:'dog', dx:'腎上腺皮質腺癌', dxEn:'Adrenocortical Adenocarcinoma',
+   cat:'adrenal', site:'腎上腺', morph:'epithelial',
+   imgs:['1a__1x2c-G2nOWuRUQhYu-r3evuWtaInv','1hBRuV_fYYukQN9VtsFHORq-XZhG0G08F']},
+  {sp:'dog', dx:'血管肉瘤', dxEn:'Hemangiosarcoma (Testicle)',
+   cat:'repro', site:'睪丸', morph:'spindle',
+   imgs:['1eYh_P03BIiAa9SKTFK-ICJhC7XoS_P_M','19UqAPuvDFHvRm2ERVbEGOEKteO0ABkEo','18FWoiLp-LCyVzGNEY7WleN8u6fh7SYZn','14-Ybi1J-VHFhsPMuwLqKCOBphypV-q8E','11X4WGsXYRT7Ey_FJl9DyeiwVY5v10QQ4','1F_Zu3nQalUN_5ZJS0XVDWNlRXOUJNQT4','1eWFlWtKs0IPveRrMylpGm7OpdtaVDdjZ','1bMhm9766Mh4Vi7t3x0ZWtexJLdcvTrCr','18pXVIIPLJd4UO83NfgkbeWh99GrdHIpE','1i4oOwlT6lDXGC8NfP1Gsy6fa7bBRGXdU','1QEpGDQoUTnfJa0iMg2IV4n3f9rKU_hWB','1e9VyXEB0k3H-_buPTGTb42czYxrLnQOn','1k4zkS8cDTdWhgaHF2Z4ihy9UKvaLkFtk','1Xfqmjhf28ASg-2p2_VyDutYPp4IvXmkF','1D3U-bmVri8FUBuj9QCu1_mrsOMojHKW_','12DcwKfPF52UXU4BPu9jl5c89VleuN8X-','1JnN6U2eEHX_rvw5P2-_Xj4C8Rhf_MxKg','1cuDUNTmrhhfHBS_aiBzQ8sl_Lgp7t6Vp','1zCxJavFRHNWMbXchcurQ_PhXBBRls9Nj','1xFv494NipZKBzIJXMG10-GUHKG0TrytY','1SWl6-KReckdpLLxJ0QjmqlxFntw0QfY1','1mcJVUY_ZWwOTA2P1Q2QXurn9gazOrlX3','1EI4xX_kQIW0rgGLN4SJnYadhINjLJ9c6','1uqDmIrXEeMeeVoiDrb4sME4sdYsypio3']},
+  {sp:'dog', dx:'血管肉瘤', dxEn:'Hemangiosarcoma (Spleen)',
+   cat:'spleen', site:'脾臟', morph:'spindle',
+   imgs:['1GyauaLcd86lKStyzPlOuWabCAAn_O8sc','1e9r7B1OLDvg7t9dAU8aFF5lKRoopUCyJ','13Q5WXqf3y5k3gWMfi-H8uPKZIG3FIFnN','1L5NKRNpOpTei_IQMwrbXfl9DYDMcbNJS']},
+  {sp:'dog', dx:'骨肉瘤', dxEn:'Osteosarcoma',
+   cat:'skin', site:'骨骼', morph:'spindle',
+   imgs:['1hUPH2U3iMrGHsgm5X8S8ytSyxxZauZ1O','1rML6Mu0Am3c2eFbrvso7LIB3mgQAw5dR','1DfHqwjS6eKEc0YLHRiAWFraIRYdATnxV','1crg8v3YrKZfNs6t5z9_rldF2CtVIb4_8','1LxOMPTVyMz08HZuD_Jkg_9Xl0PNVLdQW','11PAMyE0Z_FF8OItu-gxAe7hDeDX8q2mM','19qrWShOztnMqZRh_cuNTz8iGhTmnhrZP','1B6xTAdbbmaUsy4VAs7sS1I_ycfHAm8q7','1HT5sc6OCaoCyljf0XjAgKekWaWj69rIs','1kw55iJQEaPtApsZnax_Gcr5JzyWgzWOT','1Xb5scCFPgNoce7SiGxXAZuKcv4SsRsDM','1QAC-e85W4KALfqOL4_xlK3zPKTOqxxkY','1G76_rrSEpq_ZI5LbEVTvR3ltV2vAyNpR','1G1Dq6P6gvJ_FjDS4RAkxTlM4ddoEW90H','1E3nkiuMZX9hhpOlM4tgc1N--VLcaCuRy','113jqmKkealz6XjqB_9CmweUO1s1Km2y-','19Pv5eh7DthDpAuvK3P7t_iGNAoJIfp52','1CxaM-X8aSImIrwFohx3NJO3bFxv496Dt']},
+  {sp:'cat', dx:'分枝桿菌症', dxEn:'Mycobacteriosis',
+   cat:'resp', site:'肺臟', morph:'other',
+   imgs:['1qZVQUkknGC1_B9AGvvJEgCYwoBtKPZXc','1X12j0zPQSTxiiUUgDMQdDaTfQOUqlV_N','1-fKM29vGhRiq3EBzK6Vo2Eu8mbQcGWRe','1DfxWqyNNOU16BA6j5pPqgK-Z0LhgFzs8','149W2gMYEjlG0RjdU2t2nq0V2DAFRQdm3','1GAlH80rE4w8hbAXSdzxUXaMOr-PZjnpN','1LimEAw2rEiWY3bYg_y511xMofyi0ZNOc','1bPCQjirFt53T3wCUMjgYZq6UK5QI6-8J','1gpIqtTLYFjbLX_wk-Bf1nhpdvoWBV7Oq','1IsNkQhXKUQmqxwOLKMBfBadrQwJf7nex']},
 ];
 
 // State
