@@ -87,8 +87,10 @@
   .empty-section { text-align: center; padding: 4rem 2rem; color: #999; }
   .empty-section .icon { font-size: 3rem; margin-bottom: 1rem; }
   .empty-section h4 { color: #666; font-weight: 600; }
-  .search-box { border-radius: 20px; border: 2px solid #ddd; padding: 0.3rem 1rem;
-    font-size: 0.85rem; outline: none; width: 200px; }
+  .search-bar { background: white; border-radius: 12px; padding: 0.65rem 1.2rem;
+    margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; align-items: center; }
+  .search-box { border-radius: 20px; border: 2px solid #ddd; padding: 0.35rem 1rem;
+    font-size: 0.85rem; outline: none; width: 100%; }
   .search-box:focus { border-color: #2c3e50; }
   .dx-select { border-radius: 20px; border: 2px solid #ddd; padding: 0.3rem 0.8rem;
     font-size: 0.82rem; outline: none; background: white; color: #444; cursor: pointer;
@@ -276,7 +278,7 @@
     <div class="main-content">
       <div id="filter-cyto" class="filter-section active">
         <div class="filter-bar">
-        <span class="label">分類：</span>
+        <span class="label">位置分類：</span>
         <button class="filter-btn active" data-cat="all">全部</button>
         <button class="filter-btn" data-cat="skin">皮膚及皮下</button>
         <button class="filter-btn" data-cat="mammary">乳腺腺體</button>
@@ -288,13 +290,12 @@
         <button class="filter-btn" data-cat="repro">生殖系統</button>
         <button class="filter-btn" data-cat="adrenal">腎上腺</button>
         <button class="filter-btn" data-cat="urinary">泌尿道</button>
-        <input type="text" class="search-box ms-auto" id="searchBox" placeholder="🔍 搜尋診斷名稱...">
       </div>
       </div>
 
       <div id="filter-hemo" class="filter-section">
         <div class="filter-bar">
-          <span class="label">分類：</span>
+          <span class="label">位置分類：</span>
           <button class="filter-btn active" data-cat="all">全部</button>
           <button class="filter-btn" data-cat="blood_smear">🩸 血液抹片</button>
           <button class="filter-btn" data-cat="bone_marrow">🦴 骨髓抹片</button>
@@ -303,7 +304,7 @@
 
       <div id="filter-micro" class="filter-section">
         <div class="filter-bar">
-          <span class="label">分類：</span>
+          <span class="label">位置分類：</span>
           <button class="filter-btn active" data-cat="all">全部</button>
           <button class="filter-btn" data-cat="urine_sed">🧪 尿液沉渣</button>
           <button class="filter-btn" data-cat="fecal">🌿 糞便鏡檢</button>
@@ -312,7 +313,7 @@
       </div>
 
       <div class="filter-morph-bar">
-        <span class="label">形態：</span>
+        <span class="label">形態分類：</span>
         <button class="morph-btn active" data-morph="all">全部</button>
         <button class="morph-btn" data-morph="round">圓形細胞</button>
         <button class="morph-btn" data-morph="epithelial">上皮細胞</button>
@@ -321,6 +322,9 @@
         <button class="morph-btn" data-morph="mixed">其他</button>
       </div>
 
+      <div class="search-bar">
+        <input type="text" class="search-box" id="searchBox" placeholder="🔍 搜尋關鍵字...">
+      </div>
       <div class="results-count" id="resultsCount"></div>
       <div class="row g-3" id="caseGrid"></div>
     </div>
