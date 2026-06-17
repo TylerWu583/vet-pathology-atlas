@@ -251,6 +251,7 @@
   .dx-item.active { background: #edf0f8; color: #1a2a4a; font-weight: 700; border-left-color: #1a2a4a; }
   .dx-count { font-size: 0.68rem; background: #e5e5e5; border-radius: 10px; padding: 0.1rem 0.45rem; color: #666; flex-shrink: 0; min-width: 18px; text-align: center; }
   .dx-item.active .dx-count { background: #1a2a4a; color: white; }
+  .dx-group-header { font-size: 0.68rem; font-weight: 700; color: #aaa; letter-spacing: 0.06em; padding: 0.55rem 0.85rem 0.15rem; margin-top: 0.2rem; text-transform: uppercase; }
   .main-content { flex: 1; overflow-y: auto; min-width: 0; padding-bottom: 1.2rem; }
   @media (max-width: 768px) {
     body { height: auto; overflow: auto; }
@@ -631,9 +632,13 @@ const CASES = [
    cat:'blood_smear', site:'血液抹片',
    imgs:['1brqtb4QICE15d8UjIDub447XTiPnlryu']},
   {sp:'dog',
-   dx:'毒性顆粒變化與羅列小體', dxEn:'Toxic Granulation & Döhle Bodies',
+   dx:'顆粒性中毒變化', dxEn:'Toxic Granulation',
    cat:'blood_smear', site:'血液抹片',
-   imgs:['1xXdxahXysEhMtdkZZIJxi3c-nj94pxEa','1Ksm7hF823-ijo3hp_arZENYegNKN7nFe','1bSCi76cytaCf5_lIb18oIazevXO_VPld','1qsj8fx9SkIsMPTKBr05oLDxx2974Nb6M','19l2VUQ6yQd4SaLkt0oCyHzVUm7CuUbTI']},
+   imgs:['1xXdxahXysEhMtdkZZIJxi3c-nj94pxEa','1Ksm7hF823-ijo3hp_arZENYegNKN7nFe']},
+  {sp:'dog',
+   dx:'羅列小體', dxEn:'Döhle Bodies',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1bSCi76cytaCf5_lIb18oIazevXO_VPld','1qsj8fx9SkIsMPTKBr05oLDxx2974Nb6M','19l2VUQ6yQd4SaLkt0oCyHzVUm7CuUbTI']},
   {sp:'dog',
    dx:'有核紅血球', dxEn:'Nucleated Red Blood Cells (nRBCs)',
    cat:'blood_smear', site:'血液抹片',
@@ -658,6 +663,9 @@ function getSection(c) {
   return 'cyto';
 }
 
+// Findings (phenomena) vs Diseases grouping
+const FINDING_DX = new Set(['海因茲小體','破碎紅血球','顆粒性淋巴球','微絲蟲','顆粒性中毒變化','羅列小體','有核紅血球','磷酸銨鎂結晶','球蟲卵囊']);
+
 // Sidebar disease list
 function updateDxSidebar() {
   const list = document.getElementById('dxList');
@@ -674,9 +682,20 @@ function updateDxSidebar() {
   const dxNames = Object.keys(dxCount).sort((a,b) => a.localeCompare(b,'zh-TW'));
   const total = matching.length;
   let html = `<div class="dx-item ${!currentDx ? 'active' : ''}" data-dx="">全部 <span class="dx-count">${total}</span></div>`;
-  dxNames.forEach(dx => {
-    html += `<div class="dx-item ${currentDx === dx ? 'active' : ''}" data-dx="${dx.replace(/"/g,'&quot;')}">${dx} <span class="dx-count">${dxCount[dx]}</span></div>`;
-  });
+  const diseases = dxNames.filter(dx => !FINDING_DX.has(dx));
+  const findings = dxNames.filter(dx => FINDING_DX.has(dx));
+  if (diseases.length) {
+    html += `<div class="dx-group-header">疾病</div>`;
+    diseases.forEach(dx => {
+      html += `<div class="dx-item ${currentDx === dx ? 'active' : ''}" data-dx="${dx.replace(/"/g,'&quot;')}">${dx} <span class="dx-count">${dxCount[dx]}</span></div>`;
+    });
+  }
+  if (findings.length) {
+    html += `<div class="dx-group-header">現象及變化</div>`;
+    findings.forEach(dx => {
+      html += `<div class="dx-item ${currentDx === dx ? 'active' : ''}" data-dx="${dx.replace(/"/g,'&quot;')}">${dx} <span class="dx-count">${dxCount[dx]}</span></div>`;
+    });
+  }
   list.innerHTML = html;
   list.querySelectorAll('.dx-item').forEach(item => {
     item.addEventListener('click', function() {
