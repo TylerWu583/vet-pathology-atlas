@@ -729,7 +729,7 @@ function renderAll() {
     const q = searchQ.toLowerCase();
     const searchMatch = !q ||
       c.dx.includes(q) || c.dxEn.toLowerCase().includes(q) || (c.site||'').includes(q);
-    if (secMatch && catMatch && morphMatch && dxMatch && searchMatch) { visible++; html += renderCard(c, i); }
+    if (catMatch && morphMatch && dxMatch && searchMatch) { visible++; html += renderCard(c, i); }
   });
 
   grid.innerHTML = html;
