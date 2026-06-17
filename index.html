@@ -24,6 +24,7 @@
   --fecal:       #558b2f;
   --skin-scrape: #4e342e;
   --platelet: #f57c00;
+  --parasite: #00695c;
   }
   body { background: #f5f6fa; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
   .atlas-header {
@@ -60,6 +61,7 @@
   .filter-btn[data-cat="blood_smear"].active { background: var(--blood-smear); border-color: var(--blood-smear); }
   .filter-btn[data-cat="bone_marrow"].active { background: var(--bone-marrow); border-color: var(--bone-marrow); }
   .filter-btn[data-cat="platelet"].active { background: var(--platelet); border-color: var(--platelet); }
+  .filter-btn[data-cat="parasite"].active { background: var(--parasite); border-color: var(--parasite); }
   .filter-btn[data-cat="urine_sed"].active   { background: var(--urine-sed);   border-color: var(--urine-sed); }
   .filter-btn[data-cat="fecal"].active       { background: var(--fecal);       border-color: var(--fecal); }
   .filter-btn[data-cat="skin_scrape"].active { background: var(--skin-scrape); border-color: var(--skin-scrape); }
@@ -74,6 +76,8 @@
   .cat-skin_scrape .card-accent { background: var(--skin-scrape); }
   .cat-platelet .card-accent { background: var(--platelet); }
   .cat-platelet .badge-cat { background: color-mix(in srgb, var(--platelet) 12%, white); color: var(--platelet); }
+  .cat-parasite .card-accent { background: var(--parasite); }
+  .cat-parasite .badge-cat { background: color-mix(in srgb, var(--parasite) 12%, white); color: var(--parasite); }
   .cat-skin_scrape .badge-cat   { background: color-mix(in srgb, var(--skin-scrape) 12%, white); color: var(--skin-scrape); }
   /* Section Tabs - in header */
   .section-tabs { display: flex; gap: 0; }
@@ -307,11 +311,12 @@
 
       <div id="filter-hemo" class="filter-section">
         <div class="filter-bar">
-          <span class="label">位置分類：</span>
+          <span class="label">分類：</span>
           <button class="filter-btn active" data-cat="all">全部</button>
           <button class="filter-btn" data-cat="blood_smear">🔴 紅血球</button>
           <button class="filter-btn" data-cat="bone_marrow">🔵 白血球</button>
           <button class="filter-btn" data-cat="platelet">🟡 血小板</button>
+          <button class="filter-btn" data-cat="parasite">🦠 病原體</button>
         </div>
       </div>
 
@@ -323,16 +328,6 @@
           <button class="filter-btn" data-cat="fecal">🌿 糞便鏡檢</button>
           <button class="filter-btn" data-cat="skin_scrape">🔬 皮膚/耳道刮片</button>
         </div>
-      </div>
-
-      <div class="filter-morph-bar">
-        <span class="label">形態分類：</span>
-        <button class="morph-btn active" data-morph="all">全部</button>
-        <button class="morph-btn" data-morph="round">圓形細胞</button>
-        <button class="morph-btn" data-morph="epithelial">上皮細胞</button>
-        <button class="morph-btn" data-morph="spindle">紡錘細胞</button>
-        <button class="morph-btn" data-morph="inflammatory">炎症</button>
-        <button class="morph-btn" data-morph="mixed">其他</button>
       </div>
 
       <div class="search-bar">
@@ -577,7 +572,7 @@ const CASES = [
    imgs:['1ib5xoqN3KRgDCdOQZbi47LxtghgoWr7z','1p3bLlN1M6ieeVd0PgF7rIyTW5K0gB3_e','1rcdrbAiLmpJSO79S97WRRmtoYoFDlgE5','1vb25LdGUNqu2cR7osXQ9arUHeakGsJku']},
   {sp:'dog',
    dx:'焦蟲（大型）', dxEn:'Babesiosis - Large Form (Babesia canis)',
-   cat:'blood_smear', site:'血液抹片',
+   cat:'parasite', site:'血液抹片',
    imgs:['1koETvLB2BZi7qN0U1t1kzBoWhSkgUVDk','10xAPl--9TWGsnEXmVvvDX0BNIbQqpArv','1K_yA7tXS7pe5rCT570PVScOuTj5GgHTR','1kVqq-IwdH3uXMUJrftymJ7E2QAo0dk5z','1KMOG9I82CztLyeIbIzn3ChQAKCHHaiXy']},
   {sp:'cat',
    dx:'磷酸銨鎂結晶', dxEn:'Struvite Crystals (Ammonium Magnesium Phosphate)',
@@ -585,11 +580,11 @@ const CASES = [
    imgs:['1E6YLb9RV_JMJkbIIcHlMXB9KNHLmtgPQ','1mE6fARB8AyUYLKZ64bx4Z-JvCSBq4DdW']},
   {sp:'dog',
    dx:'焦蟲（大型）', dxEn:'Babesiosis - Large Form (Babesia canis)',
-   cat:'blood_smear', site:'血液抹片',
+   cat:'parasite', site:'血液抹片',
    imgs:['1ldX9iyoE2e6A3DNdhy2WPTIW506ECDGE','1kjq1d_KwDf1nprzZ4rYCLk4qTRz4DYYi','1zoO87zRKcCbcfsQqR8lBpE1dKF_aPdei','1Mo_bGOJvtHpwhlhRElOkqVvuLqO8GprV','1G-tk3zcpD3O_p0qiPVPEANF4MKIHGi7r','1iL3D_4-HbhGAM8FvhbdCVd6DjrUxqRG-']},
   {sp:'dog',
    dx:'焦蟲（小型）', dxEn:'Babesiosis - Small Form (Babesia gibsoni)',
-   cat:'blood_smear', site:'血液抹片',
+   cat:'parasite', site:'血液抹片',
    imgs:['1jdG00qY9AP-RRuJitnBluJN6jEAtjeAk','1focAGgnonSbPEa3miIHzKnjiXJWg0Kgk','13cqLSbKW7mj6iv4g4NZmknNT3yHMaZKz','1kV12nhfhJXjqp5HgBSr3asxqCREEiBgY']},
   {sp:'dog',
    dx:'免疫媒介性溶血性貧血', dxEn:'Immune-Mediated Hemolytic Anemia (IMHA)',
@@ -609,14 +604,14 @@ const CASES = [
    imgs:['1l8obJQq4bKFE17zwNASkxsg2_gzfLEGN','1jKuUoxJetOoplc8IHSH8SCOH3vZKXfTP','1Qi1FjTz41qquQ26kC2J8ez2UW2jSlP6e']},
   {sp:'dog',
    dx:'菌血症', dxEn:'Bacteremia',
-   cat:'blood_smear', site:'血液抹片',
+   cat:'parasite', site:'血液抹片',
    imgs:['1S0n6Dg0Ya3oL_aAUUcXuewXp-JgM8tdU','1GR6DfeAq30Fs0E8pJMxvAO8mTwCIhwIJ']},
   {sp:'dog',
    dx:'艾莉西體（桑椹體）', dxEn:'Ehrlichia Morulae',
-   cat:'bone_marrow', site:'血液抹片',
+   cat:'parasite', site:'血液抹片',
    imgs:['1W4EZ_2UufQOHCznvU1njMiq_44Vy-gpM','1O-U-_VlBy3A0n7gsd743-uGf_XSX0SIr','1Zk4SKkuR0ylul28OE00p3P1Zk0VDe_qW','1PYUsCgJ5KdadROR51PszQvmzeqlFxDEK','1FPAvDFVOU6UYxuWIthhalwTeigZgRLld','113gWsQfEzkpXLKQ1AcDCIn03LGJN3vKu','1GBvQu_m5DbOt9wlRr5zJWoQwCzKkih8F']},
   {sp:'dog',
-   dx:'顆粒球增生（CML）', dxEn:'Chronic Myeloid Leukemia (CML)',
+   dx:'慢性骨髓性白血病（CML）', dxEn:'Chronic Myeloid Leukemia (CML)',
    cat:'bone_marrow', site:'血液抹片',
    imgs:['1sjVxLE7pUegZIX893fGoPiGBlh3sQsUG','1QMpaxhzUhFMrl0rzKmOEW8gH6FM3wQkN','1ii25dPwVGplFdqn1IYGD5z6yz3ttG-gM','1S2w3C3w2JN0z1WXIJyHNidR5QAo63SLp','1ZSdZDZEhBbxF2mdyi335o5XWTGPI37N6','1dOUoBELtSvUQb_BJ2McCdeDRLUfLJPIP']},
   {sp:'cat',
@@ -629,7 +624,7 @@ const CASES = [
    imgs:['1QQpgJgufYVp7ehyw3GgRmfjTh7xW6vz2']},
   {sp:'dog',
    dx:'微絲蟲', dxEn:'Microfilaria',
-   cat:'blood_smear', site:'血液抹片',
+   cat:'parasite', site:'血液抹片',
    imgs:['1brqtb4QICE15d8UjIDub447XTiPnlryu']},
   {sp:'dog',
    dx:'顆粒性中毒變化', dxEn:'Toxic Granulation',
@@ -648,6 +643,30 @@ const CASES = [
    cat:'fecal', site:'糞便鏡檢',
    morph:'other',
    imgs:['1L7zCHBZnYBva_2QL_0zy3gtNRGWApKeT','1TipIW-gMYQsKnfzkPjuDzetqBKHiNNrH']},
+  {sp:'dog',
+   dx:'彎曲菌', dxEn:'Campylobacter spp.',
+   cat:'fecal', site:'糞便鏡檢',
+   imgs:['1FDbLSmS-TelKNHFkB2iUXqs_MbelDb5F','10X-xFKSe0_ZlwUgImXvpqOOcu2SK17bA']},
+  {sp:'cat',
+   dx:'毛滴蟲', dxEn:'Tritrichomonas fetus',
+   cat:'fecal', site:'糞便鏡檢',
+   imgs:['1Nce8Zz14ixow6fJcuUj6OoPbGmpkRckv','1pRhkyZ6zbziBsgzjiQo7KEoIRVmL3f4R','11owtBgiVNJ5pKCf6ytYbFG-jLmpO0mFu']},
+  {sp:'cat',
+   dx:'甲第氏滴蟲', dxEn:'Giardia duodenalis',
+   cat:'fecal', site:'糞便鏡檢',
+   imgs:['1BeBFnYlrAlfFwHGNveNpAXaOrha--TVo','1llVB_T-oeu8jpJcl9I-OFj2LMzTCgdCU','1jgIc4zuqtC5R-HIokHpyBPgoi8zSIZTD']},
+  {sp:'cat',
+   dx:'腸道酵母菌', dxEn:'Intestinal Yeast',
+   cat:'fecal', site:'糞便鏡檢',
+   imgs:['1cqwphqENgsmWnO5BRkF3SKllEl1ZG064','1qt26vOdEwz1H9NRyACzlEKhsEQY3UKJ-']},
+  {sp:'dog',
+   dx:'疥癬蟲', dxEn:'Sarcoptic Mange (Sarcoptes scabiei)',
+   cat:'skin_scrape', site:'皮膚刮片',
+   imgs:['1ajldKs7empHsLLJGyZCokji8ruLYf8ED','128RsGIWDMZ1bgZYaAAbLDd47cHD5Gzx-']},
+  {sp:'dog',
+   dx:'焦蟲（小型）', dxEn:'Babesiosis - Small Form (Babesia gibsoni)',
+   cat:'parasite', site:'血液抹片',
+   imgs:['1alZcWiLqUgMLhk3GtJX5nVTvYIa7Iz8w','1w19X00Tjy2tW6lq-Lwxi0pAJCowHysq6','1Tgq6o30jIMne3s7le-IvpcYqKyTQ5iDS']},
 ];
 
 // State
@@ -655,7 +674,7 @@ let currentCat = 'all', currentMorph = 'all', searchQ = '', currentDx = '';
 let currentSection = 'cyto';
 let lbCaseIdx = 0, lbImgIdx = 0;
 
-const HEMO_CATS  = ['blood_smear', 'bone_marrow', 'platelet'];
+const HEMO_CATS  = ['blood_smear', 'bone_marrow', 'platelet', 'parasite'];
 const MICRO_CATS = ['urine_sed', 'fecal', 'skin_scrape'];
 function getSection(c) {
   if (HEMO_CATS.includes(c.cat))  return 'hemo';
@@ -664,7 +683,22 @@ function getSection(c) {
 }
 
 // Findings (phenomena) vs Diseases grouping
-const FINDING_DX = new Set(['海因茲小體','破碎紅血球','顆粒性淋巴球','微絲蟲','顆粒性中毒變化','羅列小體','有核紅血球','磷酸銨鎂結晶','球蟲卵囊']);
+const FINDING_DX = new Set(['海因茲小體','破碎紅血球','顆粒性淋巴球','顆粒性中毒變化','羅列小體','有核紅血球','磷酸銨鎂結晶','球蟲卵囊']);
+
+/// Custom order: similar diseases/findings placed adjacent
+const DX_CUSTOM_ORDER = [
+  '焦蟲（大型）','焦蟲（小型）',
+  '艾莉西體（桑椹體）','菌血症',
+  '免疫媒介性溶血性貧血',
+  '慢性骨髓性白血病（CML）','急性骨髓球性白血病（AML）',
+  '微絲蟲',
+  '海因茲小體','破碎紅血球','有核紅血球',
+  '顆粒性中毒變化','羅列小體',
+  '顆粒性淋巴球',
+  '球蟲卵囊','甲第氏滴蟲','毛滴蟲','彎曲菌','腸道酵母菌',
+  '疥癬蟲',
+  '磷酸銨鎂結晶',
+];
 
 // Sidebar disease list
 function updateDxSidebar() {
@@ -679,7 +713,14 @@ function updateDxSidebar() {
   });
   const dxCount = {};
   matching.forEach(c => { dxCount[c.dx] = (dxCount[c.dx] || 0) + 1; });
-  const dxNames = Object.keys(dxCount).sort((a,b) => a.localeCompare(b,'zh-TW'));
+  const dxNames = Object.keys(dxCount).sort((a,b) => {
+    const ai = DX_CUSTOM_ORDER.indexOf(a);
+    const bi = DX_CUSTOM_ORDER.indexOf(b);
+    if (ai === -1 && bi === -1) return a.localeCompare(b,'zh-TW');
+    if (ai === -1) return 1;
+    if (bi === -1) return -1;
+    return ai - bi;
+  });
   const total = matching.length;
   let html = `<div class="dx-item ${!currentDx ? 'active' : ''}" data-dx="">全部 <span class="dx-count">${total}</span></div>`;
   const diseases = dxNames.filter(dx => !FINDING_DX.has(dx));
