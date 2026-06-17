@@ -24,12 +24,14 @@
   --fecal:       #558b2f;
   --skin-scrape: #4e342e;
   }
-  body { background: #f5f6fa; font-family: 'Segoe UI', sans-serif; }
+  body { background: #f5f6fa; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
   .atlas-header {
     background: linear-gradient(135deg, #1a2a4a 0%, #2c3e50 100%);
-    color: white; padding: 2rem 0; margin-bottom: 1.5rem;
+    color: white; padding: 1.5rem 0;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
+  .atlas-header .container { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .atlas-header .header-text { flex: 1; min-width: 200px; }
   .atlas-header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: 1px; }
   .atlas-header .subtitle { opacity: 0.8; font-size: 0.95rem; }
   .atlas-header .stats { font-size: 0.85rem; opacity: 0.7; margin-top: 0.3rem; }
@@ -69,19 +71,19 @@
   .cat-fecal .badge-cat         { background: color-mix(in srgb, var(--fecal) 12%, white); color: var(--fecal); }
   .cat-skin_scrape .card-accent { background: var(--skin-scrape); }
   .cat-skin_scrape .badge-cat   { background: color-mix(in srgb, var(--skin-scrape) 12%, white); color: var(--skin-scrape); }
-  /* Section Tabs */
-  .section-tabs { display: flex; gap: 0; margin-bottom: 1.2rem; }
+  /* Section Tabs - in header */
+  .section-tabs { display: flex; gap: 0; }
   .section-tab-btn {
-    padding: 0.55rem 1.8rem; border: 2px solid #2c3e50; background: white;
-    color: #2c3e50; font-weight: 700; font-size: 0.92rem; cursor: pointer;
+    padding: 0.4rem 1.2rem; border: 2px solid rgba(255,255,255,0.5); background: transparent;
+    color: rgba(255,255,255,0.85); font-weight: 700; font-size: 0.85rem; cursor: pointer;
     transition: all 0.2s; letter-spacing: 0.5px; }
-  .section-tab-btn:first-child { border-radius: 22px 0 0 22px; }
-  .section-tab-btn:last-child  { border-radius: 0 22px 22px 0; }
+  .section-tab-btn:first-child { border-radius: 20px 0 0 20px; }
+  .section-tab-btn:last-child  { border-radius: 0 20px 20px 0; }
   .section-tab-btn:not(:first-child) { border-left: none; }
-  .section-tab-btn.active { background: #2c3e50; color: white; }
-  .section-tab-btn:hover:not(.active) { background: #f0f3f7; }
+  .section-tab-btn.active { background: rgba(255,255,255,0.25); color: white; border-color: white; }
+  .section-tab-btn:hover:not(.active) { background: rgba(255,255,255,0.1); }
   .filter-section { display: none; }
-  .filter-section.active { display: flex; }
+  .filter-section.active { display: block; }
   .empty-section { text-align: center; padding: 4rem 2rem; color: #999; }
   .empty-section .icon { font-size: 3rem; margin-bottom: 1rem; }
   .empty-section h4 { color: #666; font-weight: 600; }
@@ -224,56 +226,105 @@
     .lightbox-img { width: 92vw; height: 70vh; }
   }
   .results-count { font-size: 0.82rem; color: #777; margin-bottom: 0.8rem; }
+
+  /* ── Sidebar layout ── */
+  .page-wrapper { flex: 1; overflow: hidden; background: #f5f6fa; }
+  .main-layout { display: flex; flex-direction: row; gap: 1rem; height: 100%; max-width: 1320px; margin: 0 auto; padding: 1.2rem 1rem 0; box-sizing: border-box; }
+  .dx-sidebar { width: 210px; flex-shrink: 0; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; display: flex; flex-direction: column; margin-bottom: 1.2rem; }
+  .dx-sidebar-header { padding: 0.75rem 1rem; font-weight: 700; color: #2c3e50; font-size: 0.88rem; border-bottom: 2px solid #f0f0f0; flex-shrink: 0; }
+  .dx-list { overflow-y: auto; flex: 1; padding: 0.3rem 0; }
+  .dx-item { padding: 0.42rem 1rem 0.42rem 0.85rem; font-size: 0.8rem; color: #555; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 0.3rem; transition: background 0.13s; border-left: 3px solid transparent; line-height: 1.35; }
+  .dx-item:hover { background: #f4f5f8; }
+  .dx-item.active { background: #edf0f8; color: #1a2a4a; font-weight: 700; border-left-color: #1a2a4a; }
+  .dx-count { font-size: 0.68rem; background: #e5e5e5; border-radius: 10px; padding: 0.1rem 0.45rem; color: #666; flex-shrink: 0; min-width: 18px; text-align: center; }
+  .dx-item.active .dx-count { background: #1a2a4a; color: white; }
+  .main-content { flex: 1; overflow-y: auto; min-width: 0; padding-bottom: 1.2rem; }
+  @media (max-width: 768px) {
+    body { height: auto; overflow: auto; }
+    .page-wrapper { overflow: visible; }
+    .main-layout { flex-direction: column; height: auto; }
+    .dx-sidebar { width: 100%; height: auto; margin-bottom: 0.8rem; }
+    .dx-list { max-height: 160px; display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.5rem; overflow-x: auto; overflow-y: hidden; }
+    .dx-item { border-left: none; border-radius: 20px; border: 2px solid #eee; padding: 0.25rem 0.7rem; flex-shrink: 0; white-space: nowrap; font-size: 0.75rem; }
+    .dx-item.active { border-color: #1a2a4a; }
+    .main-content { overflow-y: visible; }
+  }
 </style>
 </head>
 <body>
 
 <div class="atlas-header">
   <div class="container">
-    <h1>🔬 臨床病理學圖譜｜教學版</h1>
-    <div class="subtitle">Clinical Pathology Teaching Atlas &nbsp;|&nbsp; DR. WU</div>
-    <div class="stats" id="headerStats"></div>
+    <div class="header-text">
+      <h1>🔬 臨床病理學圖譜｜教學版</h1>
+      <div class="subtitle">Clinical Pathology Teaching Atlas &nbsp;|&nbsp; DR. WU</div>
+      <div class="stats" id="headerStats"></div>
+    </div>
+    <div class="section-tabs">
+      <button class="section-tab-btn active" data-section="cyto">🔬 細胞學</button>
+      <button class="section-tab-btn" data-section="hemo">🩸 血液學</button>
+      <button class="section-tab-btn" data-section="micro">🧫 鏡檢學</button>
+    </div>
   </div>
 </div>
+<div class="page-wrapper">
+  <div class="main-layout">
+    <div class="dx-sidebar">
+      <div class="dx-sidebar-header">📋 疾病列表</div>
+      <div class="dx-list" id="dxList"></div>
+    </div>
+    <div class="main-content">
+      <div id="filter-cyto" class="filter-section active">
+        <div class="filter-bar">
+        <span class="label">分類：</span>
+        <button class="filter-btn active" data-cat="all">全部</button>
+        <button class="filter-btn" data-cat="skin">皮膚及皮下</button>
+        <button class="filter-btn" data-cat="mammary">乳腺腺體</button>
+        <button class="filter-btn" data-cat="lymph">淋巴結</button>
+        <button class="filter-btn" data-cat="effusion">體腔積液</button>
+        <button class="filter-btn" data-cat="gi">消化道</button>
+        <button class="filter-btn" data-cat="liver">肝臟</button>
+        <button class="filter-btn" data-cat="spleen">脾臟</button>
+        <button class="filter-btn" data-cat="repro">生殖系統</button>
+        <button class="filter-btn" data-cat="adrenal">腎上腺</button>
+        <button class="filter-btn" data-cat="urinary">泌尿道</button>
+        <input type="text" class="search-box ms-auto" id="searchBox" placeholder="🔍 搜尋診斷名稱...">
+      </div>
+      </div>
 
-<div class="container">
-  <div class="section-tabs">
-    <button class="section-tab-btn active" data-section="cyto">🔬 細胞學</button>
-    <button class="section-tab-btn" data-section="hemo">🩸 血液學</button>
-    <button class="section-tab-btn" data-section="micro">🧫 鏡檢學</button>
+      <div id="filter-hemo" class="filter-section">
+        <div class="filter-bar">
+          <span class="label">分類：</span>
+          <button class="filter-btn active" data-cat="all">全部</button>
+          <button class="filter-btn" data-cat="blood_smear">🩸 血液抹片</button>
+          <button class="filter-btn" data-cat="bone_marrow">🦴 骨髓抹片</button>
+        </div>
+      </div>
+
+      <div id="filter-micro" class="filter-section">
+        <div class="filter-bar">
+          <span class="label">分類：</span>
+          <button class="filter-btn active" data-cat="all">全部</button>
+          <button class="filter-btn" data-cat="urine_sed">🧪 尿液沉渣</button>
+          <button class="filter-btn" data-cat="fecal">🌿 糞便鏡檢</button>
+          <button class="filter-btn" data-cat="skin_scrape">🔬 皮膚/耳道刮片</button>
+        </div>
+      </div>
+
+      <div class="filter-morph-bar">
+        <span class="label">形態：</span>
+        <button class="morph-btn active" data-morph="all">全部</button>
+        <button class="morph-btn" data-morph="round">圓形細胞</button>
+        <button class="morph-btn" data-morph="epithelial">上皮細胞</button>
+        <button class="morph-btn" data-morph="spindle">紡錘細胞</button>
+        <button class="morph-btn" data-morph="inflammatory">炎症</button>
+        <button class="morph-btn" data-morph="mixed">其他</button>
+      </div>
+
+      <div class="results-count" id="resultsCount"></div>
+      <div class="row g-3" id="caseGrid"></div>
+    </div>
   </div>
-
-  <div id="filter-cyto" class="filter-section active">
-    <div class="filter-bar" style="width:100%">
-    <span class="label">分類：</span>
-    <button class="filter-btn active" data-cat="all">全部</button>
-    <button class="filter-btn" data-cat="skin">皮膚及皮下</button>
-    <button class="filter-btn" data-cat="mammary">乳腺腺體</button>
-    <button class="filter-btn" data-cat="lymph">淋巴結</button>
-    <button class="filter-btn" data-cat="effusion">體腔積液</button>
-    <button class="filter-btn" data-cat="gi">消化道</button>
-    <button class="filter-btn" data-cat="liver">肝臟</button>
-    <button class="filter-btn" data-cat="spleen">脾臟</button>
-    <button class="filter-btn" data-cat="repro">生殖系統</button>
-    <button class="filter-btn" data-cat="adrenal">腎上腺</button>
-    <button class="filter-btn" data-cat="urinary">泌尿道</button>
-    <span class="label" style="margin-left:1rem">疾病：</span>
-    <select id="dxSelect" class="dx-select"><option value="">所有疾病</option></select>
-    <input type="text" class="search-box ms-auto" id="searchBox" placeholder="🔍 搜尋診斷名稱...">
-  </div>
-
-  <div class="filter-morph-bar">
-    <span class="label">形態：</span>
-    <button class="morph-btn active" data-morph="all">全部</button>
-    <button class="morph-btn" data-morph="round">圓形細胞</button>
-    <button class="morph-btn" data-morph="epithelial">上皮細胞</button>
-    <button class="morph-btn" data-morph="spindle">紡錘細胞</button>
-    <button class="morph-btn" data-morph="inflammatory">炎症</button>
-    <button class="morph-btn" data-morph="mixed">其他</button>
-  </div>
-
-  <div class="results-count" id="resultsCount"></div>
-  <div class="row g-3" id="caseGrid"></div>
 </div>
 
 <!-- Lightbox -->
@@ -505,19 +556,45 @@ const CASES = [
 
 // State
 let currentCat = 'all', currentMorph = 'all', searchQ = '', currentDx = '';
+let currentSection = 'cyto';
 let lbCaseIdx = 0, lbImgIdx = 0;
 
-// Populate disease dropdown
-(function() {
-  const sel = document.getElementById('dxSelect');
-  const dxList = [...new Set(CASES.map(c => c.dx))].sort((a,b) => a.localeCompare(b,'zh-TW'));
-  dxList.forEach(dx => {
-    const opt = document.createElement('option');
-    opt.value = dx; opt.textContent = dx;
-    sel.appendChild(opt);
+const HEMO_CATS  = ['blood_smear', 'bone_marrow'];
+const MICRO_CATS = ['urine_sed', 'fecal', 'skin_scrape'];
+function getSection(c) {
+  if (HEMO_CATS.includes(c.cat))  return 'hemo';
+  if (MICRO_CATS.includes(c.cat)) return 'micro';
+  return 'cyto';
+}
+
+// Sidebar disease list
+function updateDxSidebar() {
+  const list = document.getElementById('dxList');
+  const matching = CASES.filter(c => {
+    if (getSection(c) !== currentSection) return false;
+    const catMatch   = currentCat   === 'all' || c.cat   === currentCat;
+    const morphMatch = currentMorph === 'all' || c.morph === currentMorph;
+    const q = searchQ.toLowerCase();
+    const searchMatch = !q || c.dx.includes(q) || c.dxEn.toLowerCase().includes(q) || (c.site||'').includes(q);
+    return catMatch && morphMatch && searchMatch;
   });
-  sel.addEventListener('change', function() { currentDx = this.value; renderAll(); });
-})();
+  const dxCount = {};
+  matching.forEach(c => { dxCount[c.dx] = (dxCount[c.dx] || 0) + 1; });
+  const dxNames = Object.keys(dxCount).sort((a,b) => a.localeCompare(b,'zh-TW'));
+  const total = matching.length;
+  let html = `<div class="dx-item ${!currentDx ? 'active' : ''}" data-dx="">全部 <span class="dx-count">${total}</span></div>`;
+  dxNames.forEach(dx => {
+    html += `<div class="dx-item ${currentDx === dx ? 'active' : ''}" data-dx="${dx.replace(/"/g,'&quot;')}">${dx} <span class="dx-count">${dxCount[dx]}</span></div>`;
+  });
+  list.innerHTML = html;
+  list.querySelectorAll('.dx-item').forEach(item => {
+    item.addEventListener('click', function() {
+      currentDx = this.dataset.dx;
+      updateDxSidebar();
+      renderAll();
+    });
+  });
+}
 
 function renderCard(c, idx) {
   const firstImg = c.imgs[0];
@@ -566,6 +643,7 @@ function renderAll() {
   let visible = 0;
 
   CASES.forEach((c, i) => {
+    if (getSection(c) !== currentSection) return;
     const catMatch   = currentCat   === 'all' || c.cat === currentCat;
     const morphMatch = currentMorph === 'all' || c.morph === currentMorph;
     const dxMatch    = !currentDx   || c.dx === currentDx;
@@ -577,7 +655,8 @@ function renderAll() {
 
   grid.innerHTML = html;
   document.getElementById('resultsCount').textContent =
-    `顯示 ${visible} / ${CASES.length} 個病例`;
+    `顯示 ${visible} 個病例`;
+  updateDxSidebar();
   addCardSwipe();
 }
 
@@ -621,6 +700,7 @@ document.querySelectorAll('.section-tab-btn').forEach(btn => {
     document.querySelectorAll('.filter-section').forEach(f => f.classList.remove('active'));
     document.getElementById('filter-' + currentSection).classList.add('active');
     currentCat = 'all';
+    currentDx = '';
     document.querySelectorAll('[data-cat]').forEach(b => b.classList.toggle('active', b.dataset.cat === 'all'));
     renderAll();
   });
@@ -645,6 +725,7 @@ document.querySelectorAll('[data-morph]').forEach(btn => {
 });
 document.getElementById('searchBox').addEventListener('input', function() {
   searchQ = this.value;
+  currentDx = '';
   renderAll();
 });
 
