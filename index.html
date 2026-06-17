@@ -23,6 +23,7 @@
   --urine-sed:   #f9a825;
   --fecal:       #558b2f;
   --skin-scrape: #4e342e;
+  --platelet: #f57c00;
   }
   body { background: #f5f6fa; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
   .atlas-header {
@@ -58,6 +59,7 @@
   .filter-btn[data-cat="urinary"].active { background: var(--urinary); border-color: var(--urinary); }
   .filter-btn[data-cat="blood_smear"].active { background: var(--blood-smear); border-color: var(--blood-smear); }
   .filter-btn[data-cat="bone_marrow"].active { background: var(--bone-marrow); border-color: var(--bone-marrow); }
+  .filter-btn[data-cat="platelet"].active { background: var(--platelet); border-color: var(--platelet); }
   .filter-btn[data-cat="urine_sed"].active   { background: var(--urine-sed);   border-color: var(--urine-sed); }
   .filter-btn[data-cat="fecal"].active       { background: var(--fecal);       border-color: var(--fecal); }
   .filter-btn[data-cat="skin_scrape"].active { background: var(--skin-scrape); border-color: var(--skin-scrape); }
@@ -70,6 +72,8 @@
   .cat-fecal .card-accent       { background: var(--fecal); }
   .cat-fecal .badge-cat         { background: color-mix(in srgb, var(--fecal) 12%, white); color: var(--fecal); }
   .cat-skin_scrape .card-accent { background: var(--skin-scrape); }
+  .cat-platelet .card-accent { background: var(--platelet); }
+  .cat-platelet .badge-cat { background: color-mix(in srgb, var(--platelet) 12%, white); color: var(--platelet); }
   .cat-skin_scrape .badge-cat   { background: color-mix(in srgb, var(--skin-scrape) 12%, white); color: var(--skin-scrape); }
   /* Section Tabs - in header */
   .section-tabs { display: flex; gap: 0; }
@@ -298,7 +302,8 @@
           <span class="label">位置分類：</span>
           <button class="filter-btn active" data-cat="all">全部</button>
           <button class="filter-btn" data-cat="blood_smear">🔴 紅血球</button>
-          <button class="filter-btn" data-cat="bone_marrow">🔵 白血球及血小板</button>
+          <button class="filter-btn" data-cat="bone_marrow">🔵 白血球</button>
+          <button class="filter-btn" data-cat="platelet">🟡 血小板</button>
         </div>
       </div>
 
@@ -358,7 +363,13 @@ const CAT_LABEL = {
   effusion: '體腔積液', gi: '消化道', liver: '肝臟',
   spleen: '脾臟', repro: '生殖系統',
   adrenal: '腎上腺',
-  urinary: '泌尿道'
+  urinary: '泌尿道',
+  blood_smear: '紅血球',
+  bone_marrow: '白血球',
+  platelet: '血小板',
+  urine_sed: '尿液沉渣',
+  fecal: '糞便鏡檢',
+  skin_scrape: '皮膚/耳道刮片'
 };
 
 const CASES = [
@@ -571,7 +582,7 @@ let currentCat = 'all', currentMorph = 'all', searchQ = '', currentDx = '';
 let currentSection = 'cyto';
 let lbCaseIdx = 0, lbImgIdx = 0;
 
-const HEMO_CATS  = ['blood_smear', 'bone_marrow'];
+const HEMO_CATS  = ['blood_smear', 'bone_marrow', 'platelet'];
 const MICRO_CATS = ['urine_sed', 'fecal', 'skin_scrape'];
 function getSection(c) {
   if (HEMO_CATS.includes(c.cat))  return 'hemo';
