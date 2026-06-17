@@ -297,8 +297,8 @@
         <div class="filter-bar">
           <span class="label">位置分類：</span>
           <button class="filter-btn active" data-cat="all">全部</button>
-          <button class="filter-btn" data-cat="blood_smear">🩸 血液抹片</button>
-          <button class="filter-btn" data-cat="bone_marrow">🦴 骨髓抹片</button>
+          <button class="filter-btn" data-cat="blood_smear">🔴 紅血球</button>
+          <button class="filter-btn" data-cat="bone_marrow">🔵 白血球及血小板</button>
         </div>
       </div>
 
@@ -556,6 +556,14 @@ const CASES = [
   {dx:'乳糜胸', dxEn:'Chylothorax',
    sp:'cat', cat:'effusion', site:'胸水',
    imgs:['1ib5xoqN3KRgDCdOQZbi47LxtghgoWr7z','1p3bLlN1M6ieeVd0PgF7rIyTW5K0gB3_e','1rcdrbAiLmpJSO79S97WRRmtoYoFDlgE5','1vb25LdGUNqu2cR7osXQ9arUHeakGsJku']},
+  {sp:'dog',
+   dx:'大焦蟲症', dxEn:'Babesiosis (Large Form)',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1koETvLB2BZi7qN0U1t1kzBoWhSkgUVDk','10xAPl--9TWGsnEXmVvvDX0BNIbQqpArv','1K_yA7tXS7pe5rCT570PVScOuTj5GgHTR','1kVqq-IwdH3uXMUJrftymJ7E2QAo0dk5z','1KMOG9I82CztLyeIbIzn3ChQAKCHHaiXy']},
+  {sp:'cat',
+   dx:'磷酸銨鎂結晶', dxEn:'Struvite Crystals (Ammonium Magnesium Phosphate)',
+   cat:'urine_sed', site:'尿液沉渣',
+   imgs:['1E6YLb9RV_JMJkbIIcHlMXB9KNHLmtgPQ','1mE6fARB8AyUYLKZ64bx4Z-JvCSBq4DdW']},
 ];
 
 // State
