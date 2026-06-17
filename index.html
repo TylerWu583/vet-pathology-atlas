@@ -667,6 +667,20 @@ const CASES = [
    dx:'焦蟲（小型）', dxEn:'Babesiosis - Small Form (Babesia gibsoni)',
    cat:'parasite', site:'血液抹片',
    imgs:['1alZcWiLqUgMLhk3GtJX5nVTvYIa7Iz8w','1w19X00Tjy2tW6lq-Lwxi0pAJCowHysq6','1Tgq6o30jIMne3s7le-IvpcYqKyTQ5iDS']},
+  // 布達羊新增（2026-06-17）
+  {sp:'rabbit',
+   dx:'子宮腺癌', dxEn:'Uterine Adenocarcinoma',
+   cat:'repro', site:'子宮',
+   morph:'epithelial',
+   imgs:['17bgPGG0vePcYWHyOlub-Q1ODQ7y8qv-C','1BuM0y0ucTWQXgh-fvOPriz4ZkKPSB37e','1LRsdWcdgoux6VWHztpIk0_WmgSwQd9nl','1IG3huIHW0vAlRW2mSf1NJx6irvuXwvC8','187gaanxQFyt743-Y5nPhY626Ev1sDT3O']},
+  {sp:'rabbit',
+   dx:'去顆粒化中毒變化', dxEn:'Toxic Degranulation',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['11L6d_OY-nSlM36AS1s35v29red806p67','1JnjCEWXikb_jhmBFdH1RHp14oo_H4u1h','1FzlQFjyaukxn_Kx0h2Lvc9rHzYGAPl2G','10-hi61wyXu4EghjbxnftYuA64EK1-0Y8']},
+  {sp:'rabbit',
+   dx:'免疫媒介性溶血性貧血', dxEn:'Immune-Mediated Hemolytic Anemia (IMHA)',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1dsunPAXE4iUwGS9Zdoy2OZL6uB9NaSZD','1jUt-wpbR2amT83xjv06gY4JYa1xEBy6t','1S-YqlDDxzSsmF0CK_FyeqYJBtiZIE1US','1Trxzsa0yfgHdO-yimISzxjXwA3GjuLSO','1UnVKtzWqt1W4LYI9LOqWtGa2WdhyLHxP','1ieb2KoFQnkDMbQZPPi--Y5EJE121V-eG']},
 ];
 
 // State
@@ -683,9 +697,9 @@ function getSection(c) {
 }
 
 // Findings (phenomena) vs Diseases grouping
-const FINDING_DX = new Set(['海因茲小體','破碎紅血球','顆粒性淋巴球','顆粒性中毒變化','羅列小體','有核紅血球','磷酸銨鎂結晶','球蟲卵囊']);
+const FINDING_DX = new Set(['海因茲小體','破碎紅血球','顆粒性淋巴球','顆粒性中毒變化','去顆粒化中毒變化','羅列小體','有核紅血球','磷酸銨鎂結晶','球蟲卵囊']);
 
-/// Custom order: similar diseases/findings placed adjacent
+//// Custom order: similar diseases/findings placed adjacent
 const DX_CUSTOM_ORDER = [
   '焦蟲（大型）','焦蟲（小型）',
   '艾莉西體（桑椹體）','菌血症',
@@ -693,7 +707,7 @@ const DX_CUSTOM_ORDER = [
   '慢性骨髓性白血病（CML）','急性骨髓球性白血病（AML）',
   '微絲蟲',
   '海因茲小體','破碎紅血球','有核紅血球',
-  '顆粒性中毒變化','羅列小體',
+  '顆粒性中毒變化','去顆粒化中毒變化','羅列小體',
   '顆粒性淋巴球',
   '球蟲卵囊','甲第氏滴蟲','毛滴蟲','彎曲菌','腸道酵母菌',
   '疥癬蟲',
@@ -755,7 +769,7 @@ function renderCard(c, idx) {
       <div class="card-accent"></div>
       <div class="card-meta">
         <span class="badge-cat">${CAT_LABEL[c.cat]}</span>
-        ${c.sp !== 'unknown' ? `<span class="badge-sp">${c.sp === 'dog' ? '🐕 犬' : c.sp === 'cat' ? '🐈 貓' : c.sp === 'other' ? '🐾 其他' : c.sp === 'guinea_pig' ? '🐹 天竺鼠' : ''}</span>` : ''}
+        ${c.sp !== 'unknown' ? `<span class="badge-sp">${c.sp === 'dog' ? '🐕 犬' : c.sp === 'cat' ? '🐈 貓' : c.sp === 'rabbit' ? '🐰 兔' : c.sp === 'other' ? '🐾 其他' : c.sp === 'guinea_pig' ? '🐹 天竺鼠' : ''}</span>` : ''}
         ${c.morph ? `<span class="badge-morph morph-${c.morph}">${
           c.morph === 'round' ? '圓形細胞' :
           c.morph === 'epithelial' ? '上皮細胞' :
