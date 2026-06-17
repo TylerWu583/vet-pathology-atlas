@@ -170,7 +170,14 @@
     width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.3s;
   }
   .card-img-area:hover img { transform: scale(1.04); }
-  .img-count { position: absolute; bottom: 6px; right: 8px; background: rgba(0,0,0,0.65);
+  .img-label {
+    position: absolute; bottom: 0.5rem; left: 0.5rem;
+    background: rgba(0,0,0,0.62); color: #fff;
+    font-size: 0.7rem; padding: 0.15rem 0.55rem;
+    border-radius: 8px; pointer-events: none;
+    max-width: 70%; line-height: 1.4;
+  }
+    .img-count { position: absolute; bottom: 6px; right: 8px; background: rgba(0,0,0,0.65);
     color: white; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 10px; }
   .img-nav {
     position: absolute; top: 50%; transform: translateY(-50%);
@@ -568,13 +575,62 @@ const CASES = [
    sp:'cat', cat:'effusion', site:'胸水',
    imgs:['1ib5xoqN3KRgDCdOQZbi47LxtghgoWr7z','1p3bLlN1M6ieeVd0PgF7rIyTW5K0gB3_e','1rcdrbAiLmpJSO79S97WRRmtoYoFDlgE5','1vb25LdGUNqu2cR7osXQ9arUHeakGsJku']},
   {sp:'dog',
-   dx:'大焦蟲症', dxEn:'Babesiosis (Large Form)',
+   dx:'焦蟲（大型）', dxEn:'Babesiosis - Large Form (Babesia canis)',
    cat:'blood_smear', site:'血液抹片',
    imgs:['1koETvLB2BZi7qN0U1t1kzBoWhSkgUVDk','10xAPl--9TWGsnEXmVvvDX0BNIbQqpArv','1K_yA7tXS7pe5rCT570PVScOuTj5GgHTR','1kVqq-IwdH3uXMUJrftymJ7E2QAo0dk5z','1KMOG9I82CztLyeIbIzn3ChQAKCHHaiXy']},
   {sp:'cat',
    dx:'磷酸銨鎂結晶', dxEn:'Struvite Crystals (Ammonium Magnesium Phosphate)',
    cat:'urine_sed', site:'尿液沉渣',
    imgs:['1E6YLb9RV_JMJkbIIcHlMXB9KNHLmtgPQ','1mE6fARB8AyUYLKZ64bx4Z-JvCSBq4DdW']},
+  {sp:'dog',
+   dx:'焦蟲（大型）', dxEn:'Babesiosis - Large Form (Babesia canis)',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1ldX9iyoE2e6A3DNdhy2WPTIW506ECDGE','1kjq1d_KwDf1nprzZ4rYCLk4qTRz4DYYi','1zoO87zRKcCbcfsQqR8lBpE1dKF_aPdei','1Mo_bGOJvtHpwhlhRElOkqVvuLqO8GprV','1G-tk3zcpD3O_p0qiPVPEANF4MKIHGi7r','1iL3D_4-HbhGAM8FvhbdCVd6DjrUxqRG-']},
+  {sp:'dog',
+   dx:'焦蟲（小型）', dxEn:'Babesiosis - Small Form (Babesia gibsoni)',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1jdG00qY9AP-RRuJitnBluJN6jEAtjeAk','1focAGgnonSbPEa3miIHzKnjiXJWg0Kgk','13cqLSbKW7mj6iv4g4NZmknNT3yHMaZKz','1kV12nhfhJXjqp5HgBSr3asxqCREEiBgY']},
+  {sp:'dog',
+   dx:'免疫媒介性溶血性貧血', dxEn:'Immune-Mediated Hemolytic Anemia (IMHA)',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['120-Uh-4TWN1roNyV6_jrZYKWthLEI9Mh','14-NVaCzxYFgIBc3BtDHyh2S3q9YmQEGr','1q7OtvPq_YLzTZJTYf1C5eMtBgruO7WAS','1ZMw3KsQEhnc5yXmxkQopowshOz_AY-ug','1pzHOtAFPAp8lwrcS02H_OPYHSc8NbRzX','1IzP6j6nnYWW61ZMXrckL9M2rOMhk7S15','18X6722IcfPQJq1oD_pEO_Bw8Slelofo5','1_ktrJ064t5tnvP2GDa60qPA3XMdxroZ1']},
+  {sp:'cat',
+   dx:'免疫媒介性溶血性貧血', dxEn:'Immune-Mediated Hemolytic Anemia (IMHA)',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1b9MEBVMB4D5aQwBoYb0409WLiYz8SrEA','1anH_4X5iVqpqF0m0GTiNfZlcR3GwGzUz','10gJKfOZLGZNInuRf_4Fest5e0dQg_Nbs']},
+  {sp:'cat',
+   dx:'海因茲小體', dxEn:'Heinz Bodies',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1WGSB3os38_-c5O9bvuX5y1EmeibZtla8','1BsoYGzrjNMZEm_2VWjW-b_waqdkql5Ne','1p2FFOz0TSHDfRL_s_FgvPfi1ZwXMO3Oi','1YpGS77QgdI_Np6cH2U6msEDp7w36Xyas','1KV4mHhOstxG9g5rUqRxrR9JVtQm9UNd7','1UIdldydlFwOpjX2WjASzXk_kSZQLK7gM','1DE86oGNQUfHnUkfT6vSycdjyjScklp-S','1m7oE--HprmN9acR-aSR2uxSt5RhsHHgg','1F61tmR8tgYItO3wfPxvGcEZeejZ1G3fM','1K3WEIhu639VptxleyN9eWjwcCCBhNpaY','1MpQyBHpJxui_jnfvfBAS7J_FzqWADTzY','1_Nfi5Ii6tfwl4iY7k8p8eBEda2NTwTf9','1S2_XzwBavSkg86YwHMafecglXq4rmVEQ']},
+  {sp:'cat',
+   dx:'破碎紅血球', dxEn:'Schistocytosis',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1l8obJQq4bKFE17zwNASkxsg2_gzfLEGN','1jKuUoxJetOoplc8IHSH8SCOH3vZKXfTP','1Qi1FjTz41qquQ26kC2J8ez2UW2jSlP6e']},
+  {sp:'dog',
+   dx:'菌血症', dxEn:'Bacteremia',
+   cat:'blood_smear', site:'血液抹片',
+   imgs:['1S0n6Dg0Ya3oL_aAUUcXuewXp-JgM8tdU','1GR6DfeAq30Fs0E8pJMxvAO8mTwCIhwIJ']},
+  {sp:'dog',
+   dx:'艾莉西體（桑椹體）', dxEn:'Ehrlichia Morulae',
+   cat:'bone_marrow', site:'血液抹片',
+   imgs:['1W4EZ_2UufQOHCznvU1njMiq_44Vy-gpM','1O-U-_VlBy3A0n7gsd743-uGf_XSX0SIr','1Zk4SKkuR0ylul28OE00p3P1Zk0VDe_qW','1PYUsCgJ5KdadROR51PszQvmzeqlFxDEK','1FPAvDFVOU6UYxuWIthhalwTeigZgRLld','113gWsQfEzkpXLKQ1AcDCIn03LGJN3vKu','1GBvQu_m5DbOt9wlRr5zJWoQwCzKkih8F']},
+  {sp:'dog',
+   dx:'顆粒球增生（CML）', dxEn:'Chronic Myeloid Leukemia (CML)',
+   cat:'bone_marrow', site:'血液抹片',
+   imgs:['1sjVxLE7pUegZIX893fGoPiGBlh3sQsUG','1QMpaxhzUhFMrl0rzKmOEW8gH6FM3wQkN','1ii25dPwVGplFdqn1IYGD5z6yz3ttG-gM','1S2w3C3w2JN0z1WXIJyHNidR5QAo63SLp','1ZSdZDZEhBbxF2mdyi335o5XWTGPI37N6','1dOUoBELtSvUQb_BJ2McCdeDRLUfLJPIP']},
+  {sp:'cat',
+   dx:'急性骨髓球性白血病（AML）', dxEn:'Acute Myeloid Leukemia (AML)',
+   cat:'bone_marrow', site:'血液抹片',
+   imgs:['11SJKvnqQBridW47_NM6tlltSVcuiGU9g','1LiaVfugfUM8YqFuHPiUoWzwmMZm6pEZ3','1KfoMhufSDcsgOieQTVtk6BGcXD4TwTgj','1A80GOxlHLdtwxL5zoOMnAl-bW2xlaGks','1ERS_VT_lons7XmpkbiVgenZc0Ib_ngWd']},
+  {sp:'dog',
+   dx:'顆粒性淋巴球', dxEn:'Large Granular Lymphocytes (LGL)',
+   cat:'bone_marrow', site:'血液抹片',
+   imgs:['1QQpgJgufYVp7ehyw3GgRmfjTh7xW6vz2']},
+  {sp:'dog',
+   dx:'毒性顆粒變化與羅列小體、微絲蟲、有核紅血球', dxEn:'Toxic Granulation & Döhle Bodies, Microfilaria, nRBCs',
+   imgLabels:['微絲蟲', '核左轉', '淋巴球與有核紅血球', '空泡型中毒變化', '顆粒性及羅列小體中毒變化', '顆粒性及羅列小體中毒變化', '顆粒性及羅列小體中毒變化'],
+   cat:'bone_marrow', site:'血液抹片',
+   imgs:['1brqtb4QICE15d8UjIDub447XTiPnlryu','1xXdxahXysEhMtdkZZIJxi3c-nj94pxEa','16Mgje8JAyMrDEaW5yOebwPIaOKRys_4w','1Ksm7hF823-ijo3hp_arZENYegNKN7nFe','1bSCi76cytaCf5_lIb18oIazevXO_VPld','1qsj8fx9SkIsMPTKBr05oLDxx2974Nb6M','19l2VUQ6yQd4SaLkt0oCyHzVUm7CuUbTI']},
 ];
 
 // State
@@ -645,7 +701,7 @@ function renderCard(c, idx) {
         ${c.imgs.length > 1 ? `
           <button class="img-nav prev" onclick="navCardImg(event,${idx},-1)">&#8249;</button>
           <button class="img-nav next" onclick="navCardImg(event,${idx}, 1)">&#8250;</button>
-          <span class="img-count" id="cnt-${idx}">1 / ${c.imgs.length}</span>` : ''}
+          <span class="img-count" id="cnt-${idx}">1 / ${c.imgs.length}</span>${c.imgLabels ? `<span class="img-label" id="lbl-${idx}">${c.imgLabels[0]}</span>` : ''}` : ''}
       </div>
       <div class="card-body-custom">
         <h3>${c.dx}</h3>
@@ -673,7 +729,7 @@ function renderAll() {
     const q = searchQ.toLowerCase();
     const searchMatch = !q ||
       c.dx.includes(q) || c.dxEn.toLowerCase().includes(q) || (c.site||'').includes(q);
-    if (catMatch && morphMatch && dxMatch && searchMatch) { visible++; html += renderCard(c, i); }
+    if (secMatch && catMatch && morphMatch && dxMatch && searchMatch) { visible++; html += renderCard(c, i); }
   });
 
   grid.innerHTML = html;
@@ -695,6 +751,8 @@ function navCardImg(e, caseIdx, dir) {
   if (img) { img.classList.remove('loaded'); img.src = imgUrl(c.imgs[cur], 640); }
   const counter = area.querySelector('.img-count');
   if (counter) counter.textContent = `${cur+1} / ${c.imgs.length}`;
+  const lbl = document.getElementById(`lbl-${caseIdx}`);
+  if (lbl && c.imgLabels) lbl.textContent = c.imgLabels[cur] || '';
 }
 
 function addCardSwipe() {
@@ -769,8 +827,11 @@ function lbNav(dir) {
 function updateLightbox() {
   const c = CASES[lbCaseIdx];
   document.getElementById('lbImg').src = imgUrl(c.imgs[lbImgIdx], 1600);
-  document.getElementById('lbTitle').textContent = c.dx;
-  document.getElementById('lbSub').textContent = `${c.dxEn} | ${c.site}`;
+  const hasLabel = c.imgLabels && c.imgLabels[lbImgIdx];
+  document.getElementById('lbTitle').textContent = hasLabel ? c.imgLabels[lbImgIdx] : c.dx;
+  document.getElementById('lbSub').textContent = hasLabel
+    ? `${c.dx}　${c.dxEn} | ${c.site}`
+    : `${c.dxEn} | ${c.site}`;
   document.getElementById('lbCounter').textContent = `${lbImgIdx+1} / ${c.imgs.length}`;
 }
 document.getElementById('lightbox').addEventListener('click', function(e) {
