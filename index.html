@@ -173,9 +173,9 @@
   .morph-btn[data-morph="inflammatory"].active{ background: #1b5e20; border-color: #1b5e20; color: white; }
   .morph-btn[data-morph="mixed"].active       { background: #0d47a1; border-color: #0d47a1; color: white; }
 
-  .card-img-area { position: relative; overflow: hidden; background: #1a1a2e; cursor: pointer; }
+  .card-img-area { position: relative; overflow: hidden; background: #f0f0f0; cursor: pointer; }
   .card-img-area img {
-    width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.3s;
+    width: 100%; height: 220px; object-fit: contain; display: block; transition: transform 0.3s;
   }
   .card-img-area:hover img { transform: scale(1.04); }
   .img-label {
@@ -727,8 +727,8 @@ const CASES = [
    cat:'resp', site:'肺臟', morph:'inflammatory',
    imgs:['1qZVQUkknGC1_B9AGvvJEgCYwoBtKPZXc','1X12j0zPQSTxiiUUgDMQdDaTfQOUqlV_N','1-fKM29vGhRiq3EBzK6Vo2Eu8mbQcGWRe','1DfxWqyNNOU16BA6j5pPqgK-Z0LhgFzs8','149W2gMYEjlG0RjdU2t2nq0V2DAFRQdm3','1GAlH80rE4w8hbAXSdzxUXaMOr-PZjnpN','1LimEAw2rEiWY3bYg_y511xMofyi0ZNOc','1bPCQjirFt53T3wCUMjgYZq6UK5QI6-8J','1gpIqtTLYFjbLX_wk-Bf1nhpdvoWBV7Oq','1IsNkQhXKUQmqxwOLKMBfBadrQwJf7nex']},
   // 屏科大細胞學（2026-06-18 新增 6 例）
-  {sp:'dog', dx:'肥大細胞瘤', dxEn:'Mast Cell Tumor (MCT)',
-   cat:'skin', site:'皮膚', morph:'round',
+  {sp:'dog', dx:'乳腺腫瘤', dxEn:'Mammary Gland Tumor (MGT)',
+   cat:'mammary', site:'乳腺', morph:'epithelial',
    imgs:['1IZcc87ujitnkV0QRdonzKcHZEe7F5gxG','1b0rwo1ztxRAoNV7dVnJ7lxrKcCeyk7wt','1RFnzbUhGs6oXqF4SEvvafIYkDXTSkcHp','1XlVHMmNJi9z5mTFGV1IB00xVExNAWsJs','1mji3BeMWJAXFCMkhanqPGNcsmgKAoxKZ','1RpikUcymQo18mrVJPeKN5Z71h0Q__zom']},
   {sp:'dog', dx:'肝樣腺瘤', dxEn:'Hepatoid Gland Adenoma (Perianal)',
    cat:'skin', site:'肛周', morph:'epithelial',
@@ -741,45 +741,51 @@ const CASES = [
    imgs:['17h4YqsmnL0RryPU5MRB27zp9kfpR9aPn','1hL3jxV7fvUoyryTaUMuNoFHN3b0j7hBl','1d4Q8s9FRoqEJAlfKSTyR2IBuAktbeXWU','116ZnwTalbVv9PjOhHZE8l-nJE5IxUpU-','1PiOtiatRYmjPAAdyWuhy8GlcCEYd8B5k','1F_vrmMcRya7MpELMuyeNsgNqfyr0V4gZ','101_fzA9HLWaWlkHJhJyXIh3ZTc6oIjqC','1C_MEkkeWr89vEuknrQ9_nVSQvOT48pds','1RxkPfpVc70XfWkqT7b8O9XOnWciPgw6L','1B0mlz8J7gAoQmyHQ8gaHe1MXagRxYaqp','1aIGz_Zjku0XuEAjnrnjEl241Tg_iRS2V','1x9PHkupNiw6ExiExZ3_oY5cP-YsunQDq','1iq0BJxVEfe9_0Hn-AJIba6dnFTnOqCNE','1O8LRRHEuYar9G1Klw3eYOFGELOEomdem','1gdAPqVp62kPusPF5dUOvyjJEiSf9Uzl9','1t3w3_ZKI91wWIaZDL7TcHh4O0J20AGjy','13brcnKdzmeB9aU-BbLg1pVN7xjQTetqp','1rtkBk7UJGUeNWjy-_WyBRfU0gkbQEnKL']},
   {sp:'dog', dx:'胸腺上皮細胞癌', dxEn:'Thymic Epithelial Carcinoma',
    cat:'effusion', site:'縱膈腔', morph:'epithelial',
-   imgs:['1ckPFdyYLCZcdZquzxyvCENxwvllXKMKj','1jX59ZBo9qNrH2-Nfz_FiF0d1eJMczzcL','1n-vnXF1wA7NvL8LVANsQcwO9h3vHF1Ci','1falf7PxiQUM0ztTj66heXSYi3rYBXXR2','1yfwxwEoAXtmE6TGgybX3mcYBDK2TMWHh','13ZygAIAh-uPnQekq_28t-pC8SsjR86l8','1MGXQsU0np4g0ae61NyyttKh0TK1Q5Bkq','1WyL_lp6rhnsZfzfrcaVGOUBoaz1o6RXR','1B0xd23Pha_XKCfSw14sx00H1bZfDKjxt','1dI8v9kNqM3wLkVUmaH0mGzrqgt6Fop4X','1IjtsHUzk5cppOXKRyxrSd2GUfcQNt5fO','1X3inprBUaP-cyt_YO_VNFnTLGrGnL4-h','1Xm-TUEQZzwLATzrt80cUU9D_IoL6oi0e','1BCY12J6lLintOEzG_khjazj0_bFiitzH','12sZPtaRW7-bqze4PZf3e3IibtQLVSuJl','1LMK_gh42gFdMi1yISLU4hzhNOfr0xYNc']},
+   imgs:['1yfwxwEoAXtmE6TGgybX3mcYBDK2TMWHh','1falf7PxiQUM0ztTj66heXSYi3rYBXXR2','1ckPFdyYLCZcdZquzxyvCENxwvllXKMKj','1jX59ZBo9qNrH2-Nfz_FiF0d1eJMczzcL','1BCY12J6lLintOEzG_khjazj0_bFiitzH','1dI8v9kNqM3wLkVUmaH0mGzrqgt6Fop4X','1WyL_lp6rhnsZfzfrcaVGOUBoaz1o6RXR','1B0xd23Pha_XKCfSw14sx00H1bZfDKjxt','1MGXQsU0np4g0ae61NyyttKh0TK1Q5Bkq','13ZygAIAh-uPnQekq_28t-pC8SsjR86l8','1Xm-TUEQZzwLATzrt80cUU9D_IoL6oi0e','1X3inprBUaP-cyt_YO_VNFnTLGrGnL4-h','12sZPtaRW7-bqze4PZf3e3IibtQLVSuJl','1LMK_gh42gFdMi1yISLU4hzhNOfr0xYNc','1n-vnXF1wA7NvL8LVANsQcwO9h3vHF1Ci','1IjtsHUzk5cppOXKRyxrSd2GUfcQNt5fO']},
   {sp:'dog', dx:'骨肉瘤', dxEn:'Osteosarcoma (Mandibular)',
    cat:'skin', site:'右下顎骨', morph:'spindle',
-   imgs:['1NIF8fOW6gFbfkxyDzW_QI-OJKkit0Pch','1MhI9_tBzNAGvrR9SRoduU9rJ4PYUW7to','14TQ9MbVQDFvd08aXNwFL6_2s6nxxEbBS','10IaS8YmJOxgVKy4uTV5n5PV8iNUGp11i','1fqHCauLraEEqrHz3Zg_A98R02wHrmAq2','1Om7FWER1IVO43jOKgZTJMbZJnW07FstC','1I7gKF6wK0LQOcx1H0fFF3u1jDz-atvsC','1f1ANjgi5Y8n1v6O3Q46aC0KCxufpsBMM','1teEQ6koz-hQohCv1yPPHM8Z_JxfauS_Q','1fIMlfu5WQWpwALS84uWW6CKTcL3vkQRJ','15jc9MHyH3synol6g6-rCNr_vwn3lv3wi','1JnPWfzzTYq-N65JuxSpLONvCozj7FkPX','1KdYjyzW6JBOCUCjcrJctJoOxymFFuAL4','1781ExgCtPRuBE3-djXMFXSng1vFLDP3R','1l9kL0_4VQXyfrN35CTiiZnq151og2Vb5','1aqyt6Z4LOkHd1fK2RYXfpD3kaKu5wCln','142AhZnmBHlG-57FxEj8R2iWGV5Ic0W7P','1xmv7PRdlU1wLfhiaJjl2f2AbnbhIlOWo','1uAXouEPiT9dNHDu_UawYGy0cGH0Ll10Y','1pLo76qnVgsJzZQPQWeIfSKbcg89ITLPD','1w71yGLsxtV_PYynj3OF1AEmS3AjbWpEA']},
+   imgs:['1I7gKF6wK0LQOcx1H0fFF3u1jDz-atvsC','14TQ9MbVQDFvd08aXNwFL6_2s6nxxEbBS','1Om7FWER1IVO43jOKgZTJMbZJnW07FstC','1MhI9_tBzNAGvrR9SRoduU9rJ4PYUW7to','1NIF8fOW6gFbfkxyDzW_QI-OJKkit0Pch','1f1ANjgi5Y8n1v6O3Q46aC0KCxufpsBMM','10IaS8YmJOxgVKy4uTV5n5PV8iNUGp11i','1fqHCauLraEEqrHz3Zg_A98R02wHrmAq2','1xmv7PRdlU1wLfhiaJjl2f2AbnbhIlOWo','1uAXouEPiT9dNHDu_UawYGy0cGH0Ll10Y','1w71yGLsxtV_PYynj3OF1AEmS3AjbWpEA','1pLo76qnVgsJzZQPQWeIfSKbcg89ITLPD','1l9kL0_4VQXyfrN35CTiiZnq151og2Vb5','1aqyt6Z4LOkHd1fK2RYXfpD3kaKu5wCln','1KdYjyzW6JBOCUCjcrJctJoOxymFFuAL4','1JnPWfzzTYq-N65JuxSpLONvCozj7FkPX','1fIMlfu5WQWpwALS84uWW6CKTcL3vkQRJ','15jc9MHyH3synol6g6-rCNr_vwn3lv3wi','1781ExgCtPRuBE3-djXMFXSng1vFLDP3R','1teEQ6koz-hQohCv1yPPHM8Z_JxfauS_Q','142AhZnmBHlG-57FxEj8R2iWGV5Ic0W7P']},
   // DR.WU PDF cases（2026-06-23）
   {sp:'dog', dx:'腹膜炎（Prototheca）', dxEn:'Prototheca Peritonitis',
    cat:'effusion', site:'腹水（腹膜炎）',
    imgs:['1Mzw_Nr1fPjbwIZLnYOytjYakRRwQUquX','1d_E9kDJ-cWTv7S5ppddLgT6P91k0x28X','1pHrEmvTpm6oWfTGH4Qqvt_64Wnt5CXff']},
   {sp:'cat', dx:'大細胞淋巴瘤（胸水）', dxEn:'Large Cell Lymphoma (Pleural Effusion)',
-   cat:'effusion', site:'胸水', morph:'round',
+   cat:'lymph', site:'胸水', morph:'round',
    imgs:['1OWpIKI9586sMKA0a8vtMtiJU7fDxz0f_','1x56K6-RABcpH9Pk3v8WTQy_71QBKMmD-','1U9rMt20gD-MxKF0sniIKozahM78hyz51']},
   {sp:'dog', dx:'淋巴瘤（肩前淋巴結）', dxEn:'Lymphoma (Prescapular Lymph Node)',
-   cat:'ln', site:'肩前淋巴結（雙側）', morph:'round',
+   cat:'lymph', site:'肩前淋巴結（雙側）', morph:'round',
    imgs:['1G8Heee3Xpam8DJZwH_1yp-3Ox-0jDNVT','11A8WteC_6YTYykYpRIXo57-DZEp4NVKs','1Mdg2ngrmJN6OtHGFktbHBe3L5fK7y_FJ','1PcUd2JZYkTzSlJCCX5LvSYycd-d66IQ9','1aXm-lYrjagt2t1PH3qLJ8Ul2nYY07_va']},
   // DR.WU PDF cases（2026-06-24）
   {sp:'dog', dx:'淋巴瘤（脾臟團塊）', dxEn:'Lymphoma (Splenic Mass)',
-   cat:'mass', site:'脾臟團塊', morph:'round',
+   cat:'lymph', site:'脾臟團塊', morph:'round',
    imgs:['1RnI34p-xH4vFkKlQUk7Xb-1wx7GWK6Qf','158OVRkfaByhT7jJiKDJv0ZHf-VX9rzan','1j6kZU3r966LMAHE5lU2asnmSzCfclcwq','1yxckOBOf484Pim2m6nQIg8f_Ca51duzo','1cpCBpnNUj5nhLRjXtySOSM9Vj-uZ3ByH','1DrdrXccXbNHBcXwHjjdoIinTW__NJRky']},
   {sp:'dog', dx:'大細胞淋巴瘤（多發皮下團塊）', dxEn:'Large Cell Lymphoma (Multiple Subcutaneous Masses)',
-   cat:'mass', site:'多發皮下團塊（肩前＋胸部）', morph:'round',
+   cat:'lymph', site:'多發皮下團塊（肩前＋胸部）', morph:'round',
    imgs:['1Gd8mNx1butub0lbabvSv7-xy2a3LGeVl','18Rph5eA-RqWDOlea0Xoz2_cqh4T7-teH','1sZZOJWaFiQR8ewnqFoPpoMldXs9hkZF4','1QgYq1yUJy8aevvcJfwM3bfLfukH6m_7v','1oYK8yt0hVxeiLu5nFvkRmDa26bvNflwj','1DNyRfjZ4Kpp87izPwjpxoPcKtcwbP_88']},
-  {sp:'dog', dx:'肥大細胞瘤及淋巴瘤（多部位）', dxEn:'Mast Cell Tumor and Lymphoma (Multiple Sites)',
-   cat:'mass', site:'包皮皮下＋脾臟＋腳踝', morph:'round',
-   imgs:['12-lCshNf-_HeGWguRPV6bfRlaUpR_TB0','1M5q47kHy1DDmo07fk7yu9hQ1tjfYutBv','1Z607KSsjGvQGb5ie3zArLtJtOy1GUH8f','1Op9E4s34YM0BBBigbZAwpzDQnxAFwxrv','1uSmH6b98RNbg0XbpQxDuVpMUOLPgcX4J']},
+  {sp:'dog', dx:'肥大細胞瘤（包皮皮下）', dxEn:'Mast Cell Tumor, Low-Grade (Preputial Subcutaneous)',
+   cat:'skin', site:'包皮皮下', morph:'round',
+   imgs:['1M5q47kHy1DDmo07fk7yu9hQ1tjfYutBv','12-lCshNf-_HeGWguRPV6bfRlaUpR_TB0']},
+  {sp:'dog', dx:'疑似淋巴瘤（脾臟）', dxEn:'Suspected Lymphoma (Spleen)',
+   cat:'lymph', site:'脾臟', morph:'round',
+   imgs:['1Z607KSsjGvQGb5ie3zArLtJtOy1GUH8f']},
+  {sp:'dog', dx:'上皮囊腫（左後腳踝）', dxEn:'Epithelial Cyst (Left Rear Ankle)',
+   cat:'skin', site:'左後腳踝', morph:'epithelial',
+   imgs:['1Op9E4s34YM0BBBigbZAwpzDQnxAFwxrv','1uSmH6b98RNbg0XbpQxDuVpMUOLPgcX4J']},
   {sp:'rabbit', dx:'胸腺瘤（胸腺）', dxEn:'Lymphocyte-Predominant Thymoma (Thymus)',
    cat:'mass', site:'胸腺', morph:'round',
    imgs:['19rNJClNI4aCOA1R55qWX4Yj7n9aHB19r','1lKctGn0cD3jCKHdY8HuVxXvpCFQ0Ut09','1_N5EMqr1bRtQpQzzG6pqqvExBKiL0cJ0','1X1ycNlev29gWynV2kJxiDarW7iLw7nUv','1qpUSqdD1YQwW1hOVix5Oobs-N6RYB_6j','1e3gG3-VMHe0bb_yTVDSZM4gdkR0GaTWs','16S-k8-YvCRSuH0jXBH8WSIRGSrqo0uod','1MRZL9hm2ualFVOB60OVHb8t2FwfGp60U']},
   {sp:'dog', dx:'骨肉瘤（右後膝關節皮下）', dxEn:'Osteosarcoma (Right Stifle Subcutaneous)',
-   cat:'mass', site:'右後膝關節皮下', morph:'spindle',
+   cat:'bone', site:'右後膝關節皮下', morph:'spindle',
    imgs:['1i-yUsnqrb9hS3OJgHG8kqCC3owkEisoV','1q8Kt8UyuKTlBfxOFLoSSouq8ArjhzTOB','1EPo-_elPZQkQROYCnqppxef0EkN2WjHw','1s5amAKKOWqi56UTk_r_4VGgJ_gMHohhD','1nKS6VezirX0FpY-uE19PI51YQJqh7Nox','12yRPD5BaANT84ZS7G8OptjH55i6vECP8']},
-  {sp:'dog', dx:'黑色素細胞瘤（右後膝關節皮下）', dxEn:'Melanocytoma (Right Stifle Subcutaneous)',
+  {sp:'dog', dx:'黑色素瘤（右後膝關節皮下）', dxEn:'Melanoma (Right Stifle Subcutaneous)',
    cat:'mass', site:'右後膝關節皮下', morph:'round',
    imgs:['1K3ESDIvw6rGTW3t5vQ4xiUrlqk8ZnzWC','1TOWxcNEXN_i-2DXNDtTmwADUl75amcOl','1-oyEvfjBeTqWu15xe0vBwL6yATAjCJU6','197DF3uXsTm85ZR_HcvL5TJv-4f6E1p6Z','1L3SBtlpmeg35qERf1sav0vbitHN6xcbE','1KokndvaaFdH-kBvEPpNokXP4oaW3BGsQ']},
   // DR.WU PDF cases（米奇＋奶茶，2026-06-24）
   {sp:'dog', dx:'消化道淋巴瘤', dxEn:'Gastrointestinal Lymphoma',
-   cat:'mass', site:'消化道', morph:'round',
-   imgs:['1YYwjco_K499ZVDn8jlh8nCskJGggs6G9','1dkkBg6bGH6CxlJnlGLoS-W4fw6ppj0va','12KiOoTOPUuek-UuSeRqucLoGHdmtP494','1lSkmYlQqkRIdgnpA-MHsMtC7O6Uy9I2L','1GEdwCQtzv1pgFGKNjH7PQJi02t7H5j_V','1u5vO-4J1gIyYIGUZE42EEskTI_S-baDg','1mz6dqmmAmm58moKppN4Xjdqifa-LR_Yl']},
+   cat:'gi', site:'消化道', morph:'round',
+   imgs:['1u5vO-4J1gIyYIGUZE42EEskTI_S-baDg','1YYwjco_K499ZVDn8jlh8nCskJGggs6G9','1dkkBg6bGH6CxlJnlGLoS-W4fw6ppj0va','12KiOoTOPUuek-UuSeRqucLoGHdmtP494','1lSkmYlQqkRIdgnpA-MHsMtC7O6Uy9I2L','1GEdwCQtzv1pgFGKNjH7PQJi02t7H5j_V','1mz6dqmmAmm58moKppN4Xjdqifa-LR_Yl']},
   {sp:'dog', dx:'淋巴瘤（腹腔淋巴結）', dxEn:'Lymphoma (Abdominal Lymph Node)',
-   cat:'mass', site:'腹腔淋巴結', morph:'round',
+   cat:'lymph', site:'腹腔淋巴結', morph:'round',
    imgs:['1Jw4chRAIF7CMtvrn6Y-uZ00TD-q507d7','1XP3rEP0fBlWPPSHLL7Tq93EP2TfStVa4','1Dkw_mbbDA6H6Nbc4n-TpZAZsul845iNd','1Z1Q7_hIqGZnElOhMtbHrY1pnqstYmIxZ']},
 ];
 
